@@ -1,0 +1,30 @@
+@import '../../styles/variables.scss';
+
+.dropdownPanel {
+  position: relative;
+  display: inline-block;
+  flex-grow: 1;
+
+  &_block {
+    display: block;
+  }
+
+  &__content {
+    position: absolute;
+    z-index: 10;
+    top: calc(100% + 20px);
+    visibility: hidden;
+    max-height: 335px;
+    font-size: 18px;
+    background-color: $c-white;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px 0 rgba($c-black, 0.26);
+
+    &_open {
+      visibility: visible;
+      transition: all 0.3s ease-out;
+      transform: translate(0, -10px);
+    }
+  }
+}

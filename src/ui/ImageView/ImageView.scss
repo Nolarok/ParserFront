@@ -1,0 +1,13 @@
+.imageView {
+  width: auto;
+
+  &__wrapper {
+    padding: 10px;
+    max-height: calc(100vh - 80px);
+  }
+
+  &__img {
+    max-width: 100%;
+    max-height: calc(100vh - 100px);
+  }
+}

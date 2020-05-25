@@ -1,0 +1,92 @@
+@import '../../styles/variables.scss';
+
+.radiobutton {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  overflow: hidden;
+  cursor: pointer;
+
+  &__input {
+    position: absolute;
+    z-index: -1;
+    left: -999px;
+    opacity: 0;
+  }
+
+  &__space {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 26px;
+    height: 26px;
+    color: $c-white;
+    background-color: $c-white;
+    border: solid 1px $c-lightGray;
+    border-radius: 50%;
+  }
+
+  &__check {
+    display: none;
+  }
+
+  &__text {
+    margin-left: 12px;
+    font-size: 16px;
+    line-height: 20px;
+    user-select: none;
+    color: $c-amaranth;
+  }
+
+  &_theme_check &__text {
+    color: $c-black;
+  }
+
+  &:hover &__text {
+    color: $c-black;
+  }
+
+  &__input:checked + &__space::after {
+    display: block;
+    width: 14px;
+    height: 14px;
+    content: '';
+    background-color: $c-amaranth;
+    border-radius: 50%;
+  }
+
+  &__input:checked ~ &__text {
+    color: $c-amaranth;
+  }
+
+  &_theme_check &__input:checked ~ &__text {
+    color: $c-black;
+  }
+
+  &:hover &__input:checked ~ &__text {
+    color: $c-black;
+  }
+
+  &_theme_check &__space {
+    color: $c-black;
+  }
+
+  &_theme_check:hover &__space {
+    border-color: $c-amaranth;
+  }
+
+  &_theme_check &__input:checked + &__space {
+    background-color: $c-amaranth;
+    border-color: $c-amaranth;
+  }
+
+  &_theme_check &__input:checked + &__space::after {
+    display: none;
+  }
+
+  &_theme_check &__input:checked + &__space &__check {
+    display: block;
+    width: 14px;
+    color: $c-white;
+  }
+}

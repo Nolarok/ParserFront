@@ -1,0 +1,85 @@
+@import '../../styles/variables';
+
+.formErrors {
+  position: absolute;
+  display: flex;
+
+  visibility: hidden;
+  min-height: 50px;
+
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+
+  &_theme_block {
+    margin: 20px 60px;
+    align-items: center;
+    color: $c-white;
+    background-color: $c-amaranth;
+    border-radius: 5px;
+  }
+
+  &_theme_row {
+    align-items: center;
+    color: $c-amaranth;
+  }
+
+  &__error {
+    position: relative;
+
+    &::before {
+      position: absolute;
+      top: calc(50% - 3px);
+      left: 10px;
+      width: 6px;
+      height: 6px;
+      content: '';
+      border: 1px solid $c-white;
+
+      border-radius: 50%;
+    }
+
+    &_theme_block {
+      padding: 5px 40px 5px 28px;
+    }
+
+    &_theme_row {
+
+      &::before {
+        content: none;
+      }
+    }
+  }
+
+  &__closeBtn {
+    width: 10px;
+    height: 10px;
+
+    cursor: pointer;
+    color: $c-amaranth;
+
+    background: none;
+    border: none;
+
+    &_theme_block {
+      position: absolute;
+      top: 0;
+      right: -20px;
+    }
+
+    &_theme_row {
+      position: relative;
+      margin-left: 10px;
+      padding-top: 2px;
+    }
+  }
+
+  &__close {
+    height: 100%;
+  }
+
+  &__isOpen {
+    position: relative;
+    visibility: visible;
+    opacity: 1;
+  }
+}

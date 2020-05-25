@@ -1,0 +1,20 @@
+@import './variables.scss';
+
+%scroll {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-base-color: $c-hue;
+  scrollbar-face-color: $c-hue;
+  scrollbar-track-color: $c-white;
+  scrollbar-arrow-color: $c-white;
+  scrollbar-shadow-color: $c-white;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $c-hue;
+    border-radius: 2px;
+  }
+}

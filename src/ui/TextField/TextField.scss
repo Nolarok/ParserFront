@@ -1,0 +1,92 @@
+@import '../../styles/variables.scss';
+
+.textField {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  background-color: $c-white;
+  border: solid 1px $c-lightGray;
+  border-radius: 5px;
+  transition: border-color 0.3s ease-out;
+
+  &__inputClear {
+    background-color: transparent;
+    background-image: none;
+    border: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+  }
+
+  &__input {
+    padding-right: 18px;
+    padding-left: 18px;
+    width: 100%;
+    min-width: 20px;
+    height: 100%;
+    font-size: 16px;
+    color: $c-black;
+    background-color: $c-white;
+    border: none;
+    border-radius: 5px;
+
+    &::placeholder,
+    &::-moz-placeholder,
+    &:-moz-placeholder {
+      color: rgba($c-black, 0.5);
+    }
+
+    &:-ms-input-placeholder {
+    /* ie11 fix */
+      color: rgba($c-black, 0.5) !important; /* stylelint-disable-line */
+    }
+
+    &::-ms-clear,
+    &::-ms-reveal {
+      display:none;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &_theme_small {
+    height: 40px;
+
+    &__input {
+      padding-right: 17px;
+      padding-left: 17px;
+    }
+  }
+
+  &_theme_material {
+    padding: 0;
+    height: 55px;
+    border-width: 0 0 1px 0;
+    border-color: rgba($c-black, 0.2);
+    border-radius: 0;
+  }
+
+  &_theme_material &__input {
+    padding-left: 0;
+    font-size: 18px;
+  }
+
+  &_disabled {
+    color: rgba($c-black, 0.2);
+  }
+
+  &_error {
+    border-color: $c-amaranth;
+  }
+
+  &:hover,
+  &_focus {
+    border-color: $c-denim;
+  }
+
+  &__errorText {
+    white-space: nowrap;
+  }
+}

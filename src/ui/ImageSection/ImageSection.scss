@@ -1,0 +1,53 @@
+@import '../../styles/variables.scss';
+
+.container {
+  position: relative;
+  display: flex;
+
+  width: 364px;
+  height: 100px;
+  text-align: center;
+  color: $c-white;
+  background-color: $c-black;
+  justify-content: center;
+  align-items: center;
+
+  &::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    content: '';
+    background-color: $c-black;
+    opacity: 0.2;
+  }
+
+  &__text {
+    position: absolute;
+    z-index: 1;
+    top: 24px;
+    width: 260px;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 26px;
+    text-align: center;
+    color: $c-white;
+  }
+
+  &__text-center {
+    left: 13%;
+  }
+
+  &__text-left {
+    left: 0;
+  }
+
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    user-select: none;
+  }
+}

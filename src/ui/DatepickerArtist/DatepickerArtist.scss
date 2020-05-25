@@ -1,0 +1,25 @@
+@import '../../styles/variables.scss';
+
+.datepickerArtist {
+  padding-bottom: 50px;
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+
+  background-color: $c-white;
+  border-radius: 4px;
+  box-shadow: 0 2px 16px rgba($c-black, 0.2);
+  align-items: center;
+
+  &__header {
+    display: flex;
+    height: 90px;
+    font-size: 24px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__submit {
+    text-transform: uppercase;
+  }
+}

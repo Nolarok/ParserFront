@@ -1,0 +1,21 @@
+@import '../../styles/variables.scss';
+
+.textarea {
+  padding-top: 10px;
+  padding-right: 15px;
+  padding-left: 15px;
+  padding-bottom: 10px;
+  width: 100%;
+  min-height: 90px;
+  font-size: 16px;
+  line-height: 20px;
+  resize: none;
+  border: solid 1px $c-lightGray;
+  border-radius: 5px;
+  transition: border-color 0.3s ease-out;
+
+  &:hover,
+  &:focus {
+    border-color: $c-denim;
+  }
+}

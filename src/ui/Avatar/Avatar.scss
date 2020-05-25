@@ -1,0 +1,65 @@
+@import '../../styles/variables.scss';
+
+.avatar {
+  padding: 0;
+  display: block;
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  border-radius: 50%;
+
+  &_isSquared {
+    border-radius: 4px;
+  }
+
+  &__inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+
+    &_isSquared {
+      border-radius: 4px;
+    }
+  }
+
+  &_size_huge {
+    width: 250px;
+    height: 250px;
+  }
+
+  &_size_large {
+    width: 80px;
+    height: 80px;
+  }
+
+  &_size_xLarge {
+    width: 120px;
+    height: 120px;
+  }
+
+  &_size_normal {
+    width: 60px;
+    height: 60px;
+  }
+
+  &__icon {
+    display: block;
+    width: 33px;
+  }
+
+  &__image {
+    width: 100%;
+    height: 100%;
+    /* object-fit ie fix (npm objectFitImages) */
+    font-family: 'object-fit: cover;'; /* stylelint-disable-line */
+    border-radius: 50%;
+    object-fit: cover;
+
+    &_isSquared {
+      border-radius: 4px;
+    }
+  }
+}

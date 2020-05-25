@@ -1,0 +1,18 @@
+@import '../../styles/variables.scss';
+
+.hideContent {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+
+  &__item {
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+
+  &__link {
+    margin-bottom: 10px;
+    padding-left: 10px;
+    display: inline-block;
+  }
+}

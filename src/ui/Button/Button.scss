@@ -1,0 +1,235 @@
+@import '../../styles/variables.scss';
+
+.button {
+  position: relative;
+  padding: 0;
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  text-transform: uppercase;
+  cursor: pointer;
+  background: none;
+  border: 1px solid transparent;
+  transition: background-color 0.3s ease-out, color 0.3s, opacity 0.3s ease-out;
+
+  &:disabled {
+    cursor: default;
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  &__loader {
+    position: absolute;
+    top: calc(50% - 12px);
+    left: calc(50% - 12px);
+    visibility: hidden;
+    width: 24px;
+    height: 24px;
+    background: #ffffff;
+    border-radius: 50%;
+    opacity: 0;
+
+    &_visible {
+      visibility: visible;
+      opacity: 0.3;
+      animation: loading 1s infinite;
+    }
+  }
+
+  &_size {
+
+    &_little {
+      padding: 0 15px;
+      height: 40px;
+    }
+
+    &_small {
+      padding: 0 15px;
+      height: 40px;
+    }
+
+    &_normal {
+      padding: 0 25px;
+      height: 50px;
+    }
+
+    &_large {
+      padding: 0 25px;
+      height: 58px;
+    }
+  }
+
+  &_color {
+
+    &_white {
+      color: $c-black;
+      background-color: $c-white;
+      border: 1px solid rgba($c-black, 0.2);
+      box-shadow: 0 4px 4px 0 rgba($c-black, 0.05);
+
+      &:hover {
+        background-color: $c-lavender;
+      }
+    }
+
+    &_whiteWithRed {
+      color: $c-amaranth;
+      background-color: $c-white;
+      box-shadow: 0 16px 40px 0 rgba($c-black, 0.1);
+
+      &:disabled {
+        pointer-events: none;
+        color: rgba($c-black, 0.2);
+      }
+
+      &:hover {
+        color: $c-white;
+        background-color: $c-amaranth;
+      }
+    }
+
+    &_whiteWithRedHover {
+      color: $c-black;
+      background-color: $c-white;
+      border: 1px solid rgba($c-black, 0.2);
+      box-shadow: 0 4px 4px 0 rgba($c-black, 0.05);
+
+      &:hover {
+        color: $c-white;
+        background-color: $c-amaranth;
+      }
+    }
+
+    &_lightBlue {
+      color: $c-ceruleanBlue;
+      background-color: $c-lavender;
+
+      &:hover {
+        background-color: #d7e5f5;
+      }
+    }
+
+    &_blue {
+      color: $c-white;
+      background-color: $c-ceruleanBlue;
+      box-shadow: 0 6px 25px 0 rgba($c-ceruleanBlue, 0.2);
+
+      &:hover {
+        background-color: $c-royalBlue;
+      }
+    }
+
+    &_blueDark {
+      color: $c-white;
+      background-color: $c-denim;
+      box-shadow: 0 6px 25px 0 rgba($c-ceruleanBlue, 0.2);
+
+      &:hover {
+        background-color: $c-royalBlue;
+      }
+    }
+
+    &_red {
+      font-weight: 700;
+      color: $c-white;
+      background-color: $c-amaranth;
+      box-shadow: 0 6px 25px 0 rgba($c-amaranth, 0.31);
+
+      &:hover {
+        background-color: #ff1352;
+      }
+    }
+
+    &_green {
+      font-weight: 700;
+      color: $c-white;
+      background-color: $c-pigmentGreen;
+      box-shadow: 0 6px 25px 0 rgba($c-pigmentGreen, 0.2);
+
+      &:hover {
+        background-color: #09bb5d;
+      }
+    }
+  }
+
+  &__inner {
+    position: relative;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  &_theme {
+
+    &_default {
+      border-radius: 4px;
+    }
+
+    &_circle {
+      padding: 0;
+      border: none;
+      border-radius: 50%;
+
+      & .button__inner {
+        border-radius: 50%;
+      }
+    }
+
+    &_circle.button_size_normal {
+      width: 60px;
+      height: 60px;
+    }
+
+    &_circle.button_size_large {
+      width: 70px;
+      height: 70px;
+    }
+
+    &_circle.button_size_small {
+      width: 44px;
+      height: 44px;
+    }
+
+    &_circle.button_size_little {
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  &_theme_circle.button_color_lightBlue {
+    color: $c-ceruleanBlue;
+  }
+
+  &_theme_thin {
+    font-weight: 400;
+    text-transform: none;
+    border-radius: 4px;
+  }
+
+  &_block {
+    display: block;
+    width: 100%;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+
+@keyframes loading {
+
+  from {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.3);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}

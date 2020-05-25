@@ -1,0 +1,79 @@
+@import '../../styles/variables.scss';
+
+.checkbox {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+
+  &__input {
+    position: absolute;
+    z-index: -1;
+    left: -999px;
+    opacity: 0;
+  }
+
+  &__space {
+    display: flex;
+    justify-content: center;
+    flex-shrink: 0;
+    align-items: center;
+    width: 15px;
+    height: 15px;
+    color: $c-amaranth;
+    background-color: $c-white;
+    border: solid 1px $c-lightGray;
+    border-radius: 5px;
+  }
+
+  &_error &__space {
+    border-color: $c-amaranth;
+  }
+
+  &__check {
+    position: relative;
+    top: 0;
+    left: 3px;
+    visibility: hidden;
+    width: 14px;
+  }
+
+  &:hover &__space {
+    border-color: $c-amaranth;
+  }
+
+  &__space_theme_circle &__check {
+    position: static;
+  }
+
+  &__input:checked + &__space &__check {
+    visibility: visible;
+  }
+
+  &__space_theme_circle {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+  }
+
+  &__input:checked + &__space_theme_circle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $c-white;
+    background-color: $c-amaranth;
+    border-color: $c-amaranth;
+  }
+
+  &__text {
+    margin-left: 10px;
+    font-size: 16px;
+    line-height: 20px;
+    user-select: none;
+    color: $c-black;
+  }
+
+  &_error &__text {
+    color: $c-amaranth;
+  }
+}

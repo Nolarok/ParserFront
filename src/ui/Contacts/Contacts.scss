@@ -1,0 +1,21 @@
+@import '../../styles/variables.scss';
+
+.contacts {
+
+  &__item {
+    padding-bottom: 18px;
+    display: flex;
+    font-size: 16px;
+  }
+
+  &__title {
+    flex-shrink: 0;
+    width: 92px;
+    color: $c-black;
+    opacity: 0.8;
+  }
+
+  &__mapLink {
+    padding-top: 2px;
+  }
+}

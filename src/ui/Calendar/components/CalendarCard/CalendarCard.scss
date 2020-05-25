@@ -1,0 +1,82 @@
+@import '../../../../styles/variables.scss';
+
+.container {
+  position: absolute;
+  z-index: 1;
+  padding-left: 3px;
+  background-color: $c-white;
+  border-radius: 4px;
+
+  &:hover {
+    /* stylelint-disable-next-line declaration-no-important */
+    z-index: 10000 !important;
+  }
+
+  &__card {
+    padding-top: 12px;
+    padding-right: 0;
+    padding-left: 12px;
+    padding-bottom: 10px;
+    width: 128px;
+    height: 100%;
+    background-color: $c-lavender;
+    border-radius: 4px;
+  }
+
+  &__icon {
+    color: $c-ceruleanBlue;
+  }
+
+  &__title {
+    margin-top: 5px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  &__text {
+    padding-top: 10px;
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  &_theme_blue & {
+
+    &__card {
+      background-color: $c-ceruleanBlue;
+    }
+
+    &__title {
+      color: $c-white;
+    }
+
+    &__text {
+      color: $c-white;
+    }
+
+    &__icon {
+      color: $c-white;
+    }
+  }
+
+  &_theme_red & {
+
+    &__card {
+      background-color: $c-palePink;
+    }
+
+    &__icon {
+      color: $c-amaranth;
+    }
+  }
+
+  &_theme_green & {
+
+    &__card {
+      background-color: $c-mintTulip;
+    }
+
+    &__icon {
+      color: $c-pigmentGreen;
+    }
+  }
+}

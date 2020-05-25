@@ -1,0 +1,60 @@
+@import '../../styles/variables.scss';
+@import '../../styles/scroll.scss';
+
+.orderSuccess {
+  padding-top: 33px;
+  padding-right: 40px;
+  padding-left: 40px;
+  padding-bottom: 52px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &__image {
+    margin-right: 43px;
+  }
+
+  &__title {
+    margin-top: 28px;
+    font-size: 30px;
+    font-weight: 700;
+    color: $c-black;
+  }
+
+  &__status {
+    margin-top: 28px;
+    margin-bottom: 22px;
+    padding-top: 18px;
+    padding-right: 15px;
+    padding-left: 15px;
+    padding-bottom: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    font-size: 16px;
+    color: $c-black;
+    background-color: $c-lavender;
+    border-radius: 4px;
+  }
+
+  &__statusTitle {
+    margin-right: 13px;
+  }
+
+  &__text {
+    margin-bottom: 11px;
+    font-size: 16px;
+    line-height: 26px;
+    text-align: center;
+    color: $c-black;
+  }
+
+  &__button {
+    margin-top: 12px;
+    margin-bottom: 28px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+}
