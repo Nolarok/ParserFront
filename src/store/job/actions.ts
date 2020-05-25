@@ -1,9 +1,8 @@
 import { createAction } from 'redux-act'
 import { createAsyncAction } from '@/helpers/actions'
-import { TJobRowData, TTaskRowData } from './types'
+import { TJobRowData } from '@/store/job/types'
 import { TRequestStatus } from '@/types'
-import { TGetJobRequest } from '@/api/job'
-
+import { TGetJobRequest } from '@/api/types'
 
 export const [
   fetchJobs,
