@@ -1,4 +1,4 @@
-export type TTaskRowData = {[key: string]: string}
+export type TTaskRowData = string[]
 
 export enum ETaskStatus {
   'CREATED' = 'created',
@@ -10,6 +10,7 @@ export enum ETaskStatus {
 
 export type TTaskData = {
   _id: string
+  count: number,
   status: ETaskStatus,
   result: TTaskRowData[],
   created: Date,

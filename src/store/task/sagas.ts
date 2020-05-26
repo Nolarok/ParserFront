@@ -33,7 +33,7 @@ function* SFetchTasks({payload}: any): SagaIterator {
 
 function* pollingSaga() {
   yield all([
-    takeEvery(fetchTasks, SFetchTasks),
+    // takeEvery(fetchTasks, SFetchTasks),
   ])
 }
 

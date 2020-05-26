@@ -6,15 +6,6 @@ import FirstPageIcon from '@material-ui/icons/FirstPage'
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
 
-const useStyles1 = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      flexShrink: 0,
-      marginLeft: theme.spacing(2.5),
-    },
-  }),
-)
-
 interface TablePaginationActionsProps {
   count: number
   page: number
@@ -23,7 +14,6 @@ interface TablePaginationActionsProps {
 }
 
 export function TablePaginationActions(props: TablePaginationActionsProps) {
-  const classes = useStyles1()
   const theme = useTheme()
   const { count, page, rowsPerPage, onChangePage } = props
 
@@ -44,7 +34,7 @@ export function TablePaginationActions(props: TablePaginationActionsProps) {
   }
 
   return (
-    <div className={classes.root}>
+    <div style={{flexShrink: 0}}>
       <IconButton
         onClick={handleFirstPageButtonClick}
         disabled={page === 0}

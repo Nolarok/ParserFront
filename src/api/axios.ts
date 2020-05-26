@@ -28,6 +28,15 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
   response => {
+    // console.log({response}, response?.data?.created)
+    // if (response?.data?.created) {
+    //   response.data.created = new Date(response.data.created)
+    // }
+    //
+    // if (response?.data?.updated) {
+    //   response.data.updated = new Date(response.data.updated)
+    // }
+
     return response
   },
   (error) => {

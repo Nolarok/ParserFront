@@ -1,4 +1,4 @@
-import { TTaskRowData } from '../task/types'
+import { TTaskData } from '../task/types'
 
 export type TJobData = {
   _id: string,
@@ -9,7 +9,7 @@ export type TJobData = {
 }
 
 export type TJobRowData  = {
-  tasks: TTaskRowData[],
+  tasks: TTaskData[],
 } & TJobData
 
 export enum EJobStatus {

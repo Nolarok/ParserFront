@@ -8,19 +8,19 @@ import {
 import { TRequestStatus, RequestStatus } from '@/types'
 import { TFileData } from './types'
 
-export type FileState = {
+export type TFileState = {
   files: TFileData[]
   requestStatus: TRequestStatus
   errors: {[key: string]: string}[]
 }
 
-export const initialState: FileState = {
+export const initialState: TFileState = {
   files: [],
   requestStatus: RequestStatus.DEFAULT,
   errors: []
 }
 
-const reducer = createReducer<FileState>({}, initialState)
+const reducer = createReducer<TFileState>({}, initialState)
 
 reducer.on(fetchFilesSuccess, (state, payload: TFileData[]) => {
   return {...state, ...{files: payload}}

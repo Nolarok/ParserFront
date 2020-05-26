@@ -1,5 +1,5 @@
 export type TFileData = {
   _id: string,
-  name: string,
+  filename: string,
   created: Date,
 }

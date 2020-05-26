@@ -12,7 +12,7 @@ export class TaskApi {
     }
 
     if (jobId) {
-      return axiosInstance.get(`task/byJobId/${jobId}`, { params })
+      return axiosInstance.get(`task/${jobId}`, { params })
     }
 
     return axiosInstance.get(`task`, { params })

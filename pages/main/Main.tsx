@@ -37,11 +37,6 @@ const Page: React.FC = () => {
       <Grid item xs={10}>
         <Paper>
           <h3>Задачи</h3>
-          <Button onClick={() => {
-            dispatch(fetchJobs({params: {limit: 1, offset: 0}}))}
-          }>
-            asdads
-          </Button>
           <FileTable/>
         </Paper>
       </Grid>

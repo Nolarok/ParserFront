@@ -8,7 +8,8 @@ export const [
   fetchTasks,
   fetchTasksSuccess,
   fetchTasksFail,
-] = createAsyncAction<TGetTaskRequest, TTaskData[]>('@@TASK/FETCH')
+] = createAsyncAction<TGetTaskRequest, {data: TTaskData[], jobId: string}>('@@TASK/FETCH')
+
 
 export const setRequestStatus = createAction<TRequestStatus>('@@TASK/REQUEST_STATUS')
 export const setError = createAction<{[key: string]: string}[]>('@@TASK/SET_ERROR')

@@ -1,3 +1,6 @@
+import { TJobData } from '@/store/job/types'
+
+
 export type DocumentRequest = {
   limit: number,
   offset: number,
@@ -10,7 +13,7 @@ export type TGetJobRequest = {
 }
 
 export type TGetTaskRequest = {
-  params?: DocumentRequest
+  params?: DocumentRequest & {byJobId?: boolean}
   jobId?: string,
   taskId?: string,
 }
@@ -18,4 +21,9 @@ export type TGetTaskRequest = {
 export type TGetFileRequest = {
   params?: DocumentRequest
   id?: string,
+}
+
+export type TGetJobResponse = {
+  data: TJobData[],
+  count: number
 }

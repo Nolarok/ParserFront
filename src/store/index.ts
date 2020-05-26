@@ -1,11 +1,11 @@
-import { applyMiddleware, createStore } from 'redux'
 import createSagaMiddleware from 'redux-saga'
+import { applyMiddleware, createStore } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import rootReducer from './rootReducer'
-import { JobState } from '@/store/job/reducers'
-import { TaskState } from '@/store/task/reducers'
-import { FileState } from '@/store/file/reducers'
 import rootSaga from './rootSaga'
+import { TJobState } from '@/store/job/reducers'
+import { TTaskState } from '@/store/task/reducers'
+import { TFileState } from '@/store/file/reducers'
 
 export default function makeStore() {
   const sagaMiddleware = createSagaMiddleware()
@@ -24,7 +24,7 @@ export default function makeStore() {
 }
 
 export type AppState = {
-  job: JobState,
-  task: TaskState,
-  file: FileState,
+  job: TJobState,
+  task: TTaskState,
+  file: TFileState,
 }

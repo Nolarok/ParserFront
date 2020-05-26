@@ -1,12 +1,12 @@
 import { axiosInstance } from '@/api/axios'
 import { AxiosResponse } from 'axios'
-import { TGetJobRequest } from '@/api/types'
+import { TGetJobRequest, TGetJobResponse } from '@/api/types'
 import { TJobData } from '@/store/job/types'
 
 
 
 export class JobApi {
-  static getJob({params, fileId, jobId}: TGetJobRequest): Promise<AxiosResponse<TJobData[] | TJobData>> {
+  static getJob({params, fileId, jobId}: TGetJobRequest): Promise<AxiosResponse<TGetJobResponse>> {
     if (jobId) {
       return axiosInstance.get(`job/${jobId}`)
     }

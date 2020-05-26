@@ -8,32 +8,32 @@ import {
 import { TRequestStatus, RequestStatus } from '@/types'
 import { TTaskData } from '@/store/task/types'
 
-export type TaskState = {
+export type TTaskState = {
   tasks:  {[key: string]: TTaskData[]}
   requestStatus: TRequestStatus
   errors: {[key: string]: string}[]
 }
 
-export const initialState: TaskState = {
+export const initialState: TTaskState = {
   tasks: {},
   requestStatus: RequestStatus.DEFAULT,
   errors: []
 }
 
-const reducer = createReducer<TaskState>({}, initialState)
+const reducer = createReducer<TTaskState>({}, initialState)
 
-reducer.on(fetchTasksSuccess, (state, payload: TTaskData[]) => {
-  const tasks = payload.reduce((acc: {[key: string]: TTaskData[]}, item: TTaskData) => {
-    if (!acc[item._id]) {
-      acc[item._id] = [item]
-    } else {
-      acc[item._id].push(item)
-    }
-
-    return acc
-  }, {})
-  return {...state, ...{tasks}}
-})
+// reducer.on(fetchTasksSuccess, (state, payload: TTaskData[]) => {
+//   const tasks = payload.reduce((acc: {[key: string]: TTaskData[]}, item: TTaskData) => {
+//     if (!acc[item._id]) {
+//       acc[item._id] = [item]
+//     } else {
+//       acc[item._id].push(item)
+//     }
+//
+//     return acc
+//   }, {})
+//   return {...state, ...{tasks}}
+// })
 
 reducer.on(setRequestStatus, (state, payload) => {
   return {...state, ...{requestStatus: payload}}
