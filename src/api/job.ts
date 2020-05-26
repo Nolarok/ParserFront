@@ -25,4 +25,8 @@ export class JobApi {
   static startJob(jobId: string): Promise<AxiosResponse> {
     return axiosInstance.post(`job/start/${jobId}`)
   }
+
+  static unloadCSVJob(jobId: string): Promise<AxiosResponse<string[][]>> {
+    return axiosInstance.get(`job/unload/${jobId}`)
+  }
 }

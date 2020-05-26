@@ -5,32 +5,38 @@ import List from '@material-ui/core/List'
 import ListItem, { ListItemProps } from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import InboxIcon from '@material-ui/icons/Inbox'
-import DraftsIcon from '@material-ui/icons/Drafts'
+import DescriptionIcon from '@material-ui/icons/Description'
+import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted'
 import { FileTable } from '@/components/FileTable/FileTable'
 import { Button } from '@/ui/Button'
 import { useDispatch } from 'react-redux'
 import { fetchJobs } from '@/store/job/actions'
+import { useRouter } from 'next/router'
 
 
 const Page: React.FC = () => {
   const dispatch = useDispatch()
+  const router = useRouter()
 
   return (
     <Grid container spacing={3}>
       <Grid item xs={2}>
         <List component="nav" aria-label="main mailbox folders">
-          <ListItem button>
-            <ListItemIcon>
-              <InboxIcon/>
+          <ListItem button onClick={() => {
+            router.push('/')
+          }}>
+            <ListItemIcon >
+              <DescriptionIcon/>
             </ListItemIcon>
-            <ListItemText primary="Inbox"/>
+            <ListItemText primary="Файлы"/>
           </ListItem>
-          <ListItem button>
-            <ListItemIcon>
-              <DraftsIcon/>
+          <ListItem button onClick={() => {
+            router.push('/main')
+          }}>
+            <ListItemIcon >
+              <FormatListBulletedIcon/>
             </ListItemIcon>
-            <ListItemText primary="Drafts"/>
+            <ListItemText primary="Задачи"/>
           </ListItem>
         </List>
       </Grid>

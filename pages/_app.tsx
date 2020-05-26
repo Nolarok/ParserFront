@@ -5,6 +5,8 @@ import withRedux from 'next-redux-wrapper'
 import withReduxSaga from 'next-redux-saga'
 import makeStore from '@/store'
 import '@/styles/main.scss'
+import { Layout } from '../layout'
+import { StylesProvider } from '@material-ui/core/styles'
 
 type Props = {
   store: any
@@ -28,7 +30,11 @@ class NewApp extends App<Props> {
 
     return (
       <Provider store={store}>
-        <Component {...pageProps} />
+        <StylesProvider >
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </StylesProvider>
       </Provider>
     )
   }

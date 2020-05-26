@@ -1,9 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { format } from 'date-fns'
-import { string } from 'prop-types'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { makeStyles, useTheme, Theme, createStyles } from '@material-ui/core/styles'
 import Box from '@material-ui/core/Box'
 import Collapse from '@material-ui/core/Collapse'
 import IconButton from '@material-ui/core/IconButton'
@@ -28,19 +26,11 @@ import AttachFileIcon from '@material-ui/icons/AttachFile'
 import { TablePaginationActions } from '@/components/TablePaginationActions'
 
 import { TJobRowData, EJobStatus } from '@/store/job/types'
-import { TTaskData, TTaskRowData } from '@/store/task/types'
+import { TTaskRowData } from '@/store/task/types'
 import { jobsCountSelector, jobsSelector, jobTaskSelector, jobTaskCountSelector } from '@/store/job/selectors'
-import { fetchJobs } from '@/store/job/actions'
+import { fetchJobs, startJob, unloadCSV } from '@/store/job/actions'
 import { fetchTasks } from '@/store/task/actions'
-
-
-const useRowStyles = makeStyles({
-  root: {
-    '& > *': {
-      borderBottom: 'unset',
-    },
-  },
-})
+import { Dispatch } from 'redux'
 
 type Props = {}
 
@@ -94,6 +84,7 @@ export const FileTable: React.FC = () => {
               onChangeRowsPerPage={(element) => {
                 const rowsCount:number = +element.target.value === -1 ? 9999999 : +(element.target.value)
                 setRowsPerPage(+element.target.value)
+                setCurrentPage(0)
                 dispatch(fetchJobs({params: {limit: rowsCount, offset: currentPage}}))
               }}
               ActionsComponent={TablePaginationActions}
@@ -109,7 +100,7 @@ function Row(props: { row: TJobRowData }) {
   const { row } = props
   const [open, setOpen] = React.useState(false)
   const [currentPage, setCurrentPage] = useState<number>(0)
-  const [rowsPerPage, setRowsPerPage] = useState<number>(2)
+  const [rowsPerPage, setRowsPerPage] = useState<number>(5)
   const getTasks = useSelector(jobTaskSelector)
   const taskCount = useSelector(jobTaskCountSelector)
 
@@ -145,7 +136,7 @@ function Row(props: { row: TJobRowData }) {
         <TableCell align="left">{row.fileName}</TableCell>
         <TableCell align="left">{format(row.created, 'dd.MM.yyyy')}</TableCell>
         <TableCell align="left">{JobStatusDictionary[row.status]}</TableCell>
-        <TableCell align="center">{renderActionButton(row.status as EJobStatus)}</TableCell>
+        <TableCell align="center">{renderActionButton(row, dispatch)}</TableCell>
       </TableRow>
       <TableRow component={'tr'}>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -198,8 +189,8 @@ function Row(props: { row: TJobRowData }) {
                          setCurrentPage(page)
                        }}
                        onChangeRowsPerPage={(element) => {
-                         // const rowsCount:number = +element.target.value === -1 ? 9999999 : +(element.target.value)
                          setRowsPerPage(+element.target.value)
+                         setCurrentPage(0)
                        }}
                        ActionsComponent={TablePaginationActions}
                     />
@@ -214,20 +205,6 @@ function Row(props: { row: TJobRowData }) {
   )
 }
 
-function constructTaskRows(row: TJobRowData): string[][] {
-  const result = row.tasks.reduce((acc: string[][], task: TTaskData) => {
-    return [
-      ...acc,
-      ...(task.result.map((record: TTaskRowData) => {
-        return [task.jobId, task.status, ...record]
-      })),
-    ]
-
-  }, [])
-
-  return result
-}
-
 function renderRowCollapseArrow(status: EJobStatus, open: boolean) {
   if (![EJobStatus.COMPLETED, EJobStatus.COMPLETED_WITH_ERRORS].includes(status)) {
     return null
@@ -235,28 +212,36 @@ function renderRowCollapseArrow(status: EJobStatus, open: boolean) {
   return open ? <KeyboardArrowUpIcon component={'svg'}/> : <KeyboardArrowDownIcon component={'svg'}/>
 }
 
-function renderActionButton(status: EJobStatus) {
-  switch (status) {
+function renderActionButton(job: TJobRowData, dispatch: Dispatch) {
+  switch (job.status) {
     case EJobStatus.COMPLETED_WITH_ERRORS:
       return (
         <>
-          <IconButton color="primary" aria-label="upload picture" component="span">
+          <IconButton color="primary" aria-label="upload picture" component="span" onClick={
+            () => {dispatch(startJob(job._id))}
+          }>
             <RefreshIcon/>
           </IconButton>
-          <IconButton color="primary" aria-label="upload picture" component="span">
+          <IconButton color="primary" aria-label="upload picture" component="span" onClick={
+            () => {dispatch(unloadCSV(job._id))}
+          }>
             <AttachFileIcon/>
           </IconButton>
         </>
       )
     case EJobStatus.CREATED:
       return (
-        <IconButton color="primary" aria-label="upload picture" component="span">
+        <IconButton color="primary" aria-label="upload picture" component="span" onClick={
+          () => {dispatch(startJob(job._id))}
+        }>
           <PlayArrowIcon/>
         </IconButton>
       )
     case EJobStatus.COMPLETED:
       return (
-        <IconButton color="primary" aria-label="upload picture" component="span">
+        <IconButton color="primary" aria-label="upload picture" component="span" onClick={
+          () => {dispatch(unloadCSV(job._id))}
+        }>
           <AttachFileIcon />
         </IconButton>
       )
@@ -272,21 +257,3 @@ const JobStatusDictionary: {[key: string]: string} = {
   [EJobStatus.COMPLETED]: 'Завершена',
   [EJobStatus.COMPLETED_WITH_ERRORS]: 'Завершена с ошибками',
 }
-
-// const temp: TTaskRowData = {
-//   debtor: 'string',
-//   executiveProduction: 'string',
-//   requisites: 'string',
-//   date: 'new Date()',
-//   subject: 'string',
-//   bailiff: 'string',
-//   taskId: 'string',
-// }
-
-// const rows: TJobRowData[] = [
-//   { _id: 'id0', fileId: 'fileId', fileName: 'name', created: new Date(), status: EJobStatus.CREATED, tasks: [temp] },
-//   { _id: 'id1', fileId: 'fileId', fileName: 'stub', created: new Date(), status: EJobStatus.COMPLETED_WITH_ERRORS, tasks: [temp] },
-//   { _id: 'id2', fileId: 'fileId', fileName: 'stub', created: new Date(), status: EJobStatus.PROCESS, tasks: [temp] },
-//   { _id: 'id3', fileId: 'fileId', fileName: 'stub', created: new Date(), status: EJobStatus.QUEUE, tasks: [temp] },
-//   { _id: 'id4', fileId: 'fileId', fileName: 'stub', created: new Date(), status: EJobStatus.COMPLETED, tasks: [temp] },
-// ]

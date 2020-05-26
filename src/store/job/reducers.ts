@@ -3,6 +3,8 @@ import { cloneDeep } from 'lodash'
 
 import {
   fetchJobsSuccess,
+  startJobSuccess,
+  unloadCSVSuccess,
   setElementsNumber,
   setRequestStatus,
   setError,
@@ -14,7 +16,7 @@ import {
 
 
 import { TRequestStatus, RequestStatus } from '@/types'
-import { TJobRowData } from './types'
+import { EJobStatus, TJobRowData } from './types'
 import { TTaskData } from '@/store/task/types'
 
 export type TJobState = {
@@ -45,6 +47,19 @@ reducer.on(fetchTasksSuccess, (state, payload: { data: TTaskData[], jobId: strin
   return _state
 })
 
+reducer.on(startJobSuccess, (state, payload) => {
+  const _state = cloneDeep(state)
+
+  const job = _state.jobData.find(job => job._id === payload.jobId)
+
+  if (!job) {
+    return _state
+  }
+
+  job.status = payload.status === 200 ? EJobStatus.PROCESS : EJobStatus.QUEUE
+
+  return _state
+})
 
 reducer.on(setRequestStatus, (state, payload) => {
   return { ...state, ...{ requestStatus: payload } }
@@ -56,6 +71,10 @@ reducer.on(setError, (state, payload) => {
 
 reducer.on(setElementsNumber, (state, payload) => {
   return { ...state, ...{ count: payload } }
+})
+
+reducer.on(unloadCSVSuccess, (state, payload) => {
+  return state
 })
 
 export default reducer
