@@ -1,4 +1,5 @@
 import { TJobData } from '@/store/job/types'
+import { TFileData } from '@/store/file/types'
 
 
 export type DocumentRequest = {
@@ -23,7 +24,17 @@ export type TGetFileRequest = {
   id?: string,
 }
 
+export type TGetFileResponse = {
+  data: TFileData[],
+  count: number,
+}
+
+export type TCreateFileRequest = {
+  content: string,
+  filename: string,
+}
+
 export type TGetJobResponse = {
   data: TJobData[],
-  count: number
+  count: number,
 }

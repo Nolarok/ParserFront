@@ -2,9 +2,14 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useFileUpload, useFileReader } from '@/helpers/hooks'
 import { FileApi } from '@/api/file'
 import Button from '@material-ui/core/Button'
+import Typography from '@material-ui/core/Typography'
+import { createFile } from '@/store/file/actions'
+import Fab from '@material-ui/core/Fab'
+import AddIcon from '@material-ui/icons/Add'
 
+import { useDispatch } from 'react-redux'
 
-const Home: React.FC = () => {
+export const FileLoader: React.FC = () => {
   const [rowContent, setRowContent] = useState<string | null>(null)
   const [file, setFile] = useState<File| null>(null)
 
@@ -15,7 +20,8 @@ const Home: React.FC = () => {
   }, [])
 
   const {inputFile, handleOpenInputFile, handleAddFile, error} = useFileUpload(onFileAdd)
-  const { readAsBinaryString, readAsText } = useFileReader()
+  const { readAsText } = useFileReader()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (!file) {
@@ -25,10 +31,16 @@ const Home: React.FC = () => {
     readAsText(file).then((data: string | ArrayBuffer | null) => {
       if (typeof data === 'string') {
         setRowContent(data)
-        console.log({binaryFile: rowContent})
       }
     })
   }, [file])
+
+  useEffect(() => {
+    file && rowContent && dispatch(createFile({
+      content: rowContent,
+      filename: file.name,
+    }))
+  }, [rowContent])
 
   useCallback(() => {
     console.error(error)
@@ -36,33 +48,19 @@ const Home: React.FC = () => {
 
   return (
     <div>
-      <Button variant="contained">Default</Button>
-      <p>C:\Users\Ivan\WebstormProjects\parserFront\static\temp</p>
       <input
         onChange={handleAddFile}
         type="file"
         ref={inputFile}
         style={{display: 'none'}}
       />
-      <Button
-        onClick={() => { handleOpenInputFile() }}
-      >
-        Выбрать
-      </Button>
 
-      <Button
-        disabled={!rowContent}
-        onClick={() => {
-          file && rowContent && FileApi.create({
-            content: rowContent,
-            filename: file.name
-          })
-        }}
-      >
-        Отправить
-      </Button>
+      {/*<Typography component="span" > Добавить файл: </Typography>*/}
+      <Fab color="primary" aria-label="add" onClick={
+        () => { handleOpenInputFile() }
+      }>
+        <AddIcon />
+      </Fab>
     </div>
   )
 }
-
-export default Home

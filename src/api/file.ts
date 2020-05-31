@@ -1,14 +1,18 @@
 import { axiosInstance } from '@/api/axios'
 import { AxiosResponse } from 'axios'
 import { TFileData } from '@/store/file/types'
-import { TGetFileRequest } from './types'
+import { TCreateFileRequest, TGetFileRequest, TGetFileResponse } from './types'
 
 export class FileApi {
-  static create(requestBody: {content: string, mimeType: string}): Promise<AxiosResponse<string>> {
+  static create(requestBody: TCreateFileRequest): Promise<AxiosResponse<TFileData>> {
     return axiosInstance.post('file', requestBody, {})
   }
 
-  static getFile({params, id}: TGetFileRequest): Promise<AxiosResponse<TFileData[] | TFileData>> {
-    return axiosInstance.get(`file/${id}`, { params })
+  static getFile({params, id}: TGetFileRequest): Promise<AxiosResponse<TGetFileResponse>> {
+    return axiosInstance.get(`file/${id || ''}`, { params })
+  }
+
+  static getContent(id: string): Promise<AxiosResponse<string[][]>> {
+    return axiosInstance.get(`file/content/${id}`)
   }
 }

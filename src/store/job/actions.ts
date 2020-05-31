@@ -17,6 +17,12 @@ export const [
 ] = createAsyncAction<string, {status: number, jobId: string}>('@@JOB/START')
 
 export const [
+  createJob,
+  createJobSuccess,
+  createJobFail,
+] = createAsyncAction<string>('@@JOB/CREATE')
+
+export const [
   unloadCSV,
   unloadCSVSuccess,
   unloadCSVFail,

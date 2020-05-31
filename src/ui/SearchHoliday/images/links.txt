@@ -1,8 +1,0 @@
-document.addEventListener('DOMContentLoaded', function() {
-	[].forEach.call(
-		document.querySelectorAll('[href="/id5953111"]'),
-	  function(item) {
-		 	item.setAttribute('href', '/tipidor')
-	  }
-  )
-})

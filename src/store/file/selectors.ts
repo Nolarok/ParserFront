@@ -7,3 +7,10 @@ export const filesSelector = createSelector(
   getState,
   state => state.files
 )
+
+export const fileCountSelector = createSelector(
+  getState,
+  state => {
+    return state.count
+  }
+)
