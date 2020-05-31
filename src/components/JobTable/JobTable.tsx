@@ -30,10 +30,13 @@ import { jobsCountSelector, jobsSelector, jobTaskSelector, jobTaskCountSelector 
 import { fetchJobs, startJob, unloadCSV } from '@/store/job/actions'
 import { fetchTasks } from '@/store/task/actions'
 import { Dispatch } from 'redux'
+import { TPeriod } from '@/types'
 
-type Props = {}
+type Props = {
+  period: TPeriod
+}
 
-export const JobTable: React.FC = () => {
+export const JobTable: React.FC<Props> = ({period}) => {
   const dispatch = useDispatch()
   const rows = useSelector(jobsSelector)
   const jobsCount = useSelector(jobsCountSelector)
@@ -43,7 +46,7 @@ export const JobTable: React.FC = () => {
 
   useEffect(() => {
     dispatch(fetchJobs({params: {limit: rowsPerPage, offset: currentPage}}))
-  }, [])
+  }, [period])
 
   return (
     <TableContainer component={Paper}>

@@ -23,10 +23,13 @@ import VisibilityIcon from '@material-ui/icons/Visibility'
 import AddIcon from '@material-ui/icons/Add'
 import { useRouter } from 'next/router'
 import { Link } from '@material-ui/core'
+import { TPeriod } from '@/types'
 
-type Props = {}
+type Props = {
+  period: TPeriod
+}
 
-export const FileTable: React.FC = () => {
+export const FileTable: React.FC<Props> = ({period}) => {
   const dispatch = useDispatch()
   const rows = useSelector(filesSelector)
   const filesCount = useSelector(fileCountSelector)
@@ -36,7 +39,7 @@ export const FileTable: React.FC = () => {
 
   useEffect(() => {
     dispatch(fetchFiles({params: {limit: 10, offset: 0}}))
-  }, [])
+  }, [period])
 
   return (
     <TableContainer component={Paper}>

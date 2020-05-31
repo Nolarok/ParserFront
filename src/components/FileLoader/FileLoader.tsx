@@ -1,8 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useFileUpload, useFileReader } from '@/helpers/hooks'
-import { FileApi } from '@/api/file'
-import Button from '@material-ui/core/Button'
-import Typography from '@material-ui/core/Typography'
 import { createFile } from '@/store/file/actions'
 import Fab from '@material-ui/core/Fab'
 import AddIcon from '@material-ui/icons/Add'

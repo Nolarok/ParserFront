@@ -1,12 +1,16 @@
-import React from 'react'
-import { JobTable } from '@/components/JobTable'
+import React, { useEffect } from 'react'
+
+import { DatePeriod } from '@/components/DatePeriod'
+
 import Typography from '@material-ui/core/Typography'
 import { FileLoader } from '@/components/FileLoader'
 import { FileTable } from '@/components/FileTable'
 import { Box, Container } from '@material-ui/core'
-
+import { useDatePeriod } from '@/hooks'
 
 const Page: React.FC = () => {
+  const {period, changePeriod} = useDatePeriod()
+
   return (
     <>
       <Typography variant="h6" gutterBottom component="div">
@@ -15,7 +19,10 @@ const Page: React.FC = () => {
       <Box m={2}>
         <FileLoader/>
       </Box>
-      <FileTable/>
+      <DatePeriod period={period} handleChange={changePeriod} />
+      <FileTable
+        period={period}
+      />
     </>
   )
 }

@@ -20,25 +20,7 @@ export type TRequestStatus =
   | RequestStatus.PENDING
   | RequestStatus.SUCCESS
 
-export type TFormField<T> = {
-  value: T
-  errors: string[]
-}
-
-export enum FileType {
-  VIDEO = 'video',
-  IMAGE = 'image',
-}
-
-export type FileInfo = {
-  id: string
-  type: FileType
-  labels: string[]
-  imageUrl?: string
-  videoId?: string
-}
-
-export enum Role {
-  CUSTOMER = 'Заказчик',
-  EXECUTOR = 'Исполнитель',
+export type TPeriod = {
+  from: Date,
+  to: Date
 }
