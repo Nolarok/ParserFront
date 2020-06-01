@@ -6,6 +6,7 @@ import rootSaga from './rootSaga'
 import { TJobState } from '@/store/job/reducers'
 import { TTaskState } from '@/store/task/reducers'
 import { TFileState } from '@/store/file/reducers'
+import { TUserState } from '@/store/user/reducers'
 
 export default function makeStore() {
   const sagaMiddleware = createSagaMiddleware()
@@ -27,4 +28,5 @@ export type AppState = {
   job: TJobState,
   task: TTaskState,
   file: TFileState,
+  user: TUserState,
 }

@@ -24,4 +24,4 @@ export const [
 ] = createAsyncAction<string, string[][]>('@@FILE/GET_CONTENT')
 
 export const setRequestStatus = createAction<TRequestStatus>('@@FILE/REQUEST_STATUS')
-export const setError = createAction<{type: string, error: any}>('@@FILE/SET_ERROR')
+export const setError = createAction<{message: string}[]>('@@FILE/SET_ERROR')

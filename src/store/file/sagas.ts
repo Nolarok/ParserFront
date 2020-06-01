@@ -18,7 +18,6 @@ import {
 import { RequestStatus } from '@/types'
 import { AxiosResponse } from 'axios'
 import { TGetFileResponse } from '@/api/types'
-import { loadAsCSV } from '@/helpers/csv'
 import { BASE_URL } from '@/constants'
 
 // TODO ActionMatchingPatternType
@@ -60,16 +59,16 @@ function* SContentFile({payload}: any): SagaIterator {
   }
 }
 
-
 function* SCreateFile({payload}: any): SagaIterator {
   try {
     yield put(setRequestStatus(RequestStatus.PENDING))
     const response: AxiosResponse<TFileData> = yield call(FileApi.create, payload)
     yield put(createFileSuccess({...response.data, ...{created: new Date(response.data.created)}}))
     yield put(setRequestStatus(RequestStatus.SUCCESS))
+    yield put(setError([]))
   } catch (error) {
     yield put(setRequestStatus(RequestStatus.FAILED))
-    yield put(createFileFail(error))
+    yield put(createFileFail(error.response.data.errors))
   }
 }
 

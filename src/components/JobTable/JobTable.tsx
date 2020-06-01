@@ -290,14 +290,14 @@ function renderActionButton(job: TJobRowData, dispatch: Dispatch) {
 
 const renderTasksInfo = (row: TJobRowData): React.ReactElement => {
   switch (row.status) {
+    case EJobStatus.CREATED:
+      return <span>{`(0/${row.tasksState.summary})`}</span>
     case EJobStatus.QUEUE:
     case EJobStatus.PROCESS:
-    case EJobStatus.CREATED:
-      return <span>{`(${row.tasksState.summary - row.tasksState.notProcessed}/${row.tasksState.summary})`}</span>
-    case EJobStatus.COMPLETED:
-      return <span>{`(${row.tasksState.summary})`}</span>
     case EJobStatus.COMPLETED_WITH_ERRORS:
-      return <span>{`(${row.tasksState.failed}/${row.tasksState.summary})`}</span>
+      return <span>{`(${row.tasksState.completed}/${row.tasksState.summary})`}</span>
+    case EJobStatus.COMPLETED:
+      return <span>{`(${row.tasksState.completed})`}</span>
   }
 }
 

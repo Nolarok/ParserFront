@@ -3,7 +3,7 @@ import { createReducer } from 'redux-act'
 import {
   createFileSuccess,
   fetchFilesSuccess,
-  contentFileSuccess,
+  createFileFail,
   setRequestStatus,
   setError,
 } from './actions'
@@ -15,7 +15,7 @@ export type TFileState = {
   files: TFileData[]
   requestStatus: TRequestStatus
   count: number
-  errors: {[key: string]: string}[]
+  errors: {message: string}[]
 }
 
 export const initialState: TFileState = {
@@ -39,8 +39,14 @@ reducer.on(setRequestStatus, (state, payload: TRequestStatus) => {
   return {...state, ...{requestStatus: payload}}
 })
 
+reducer.on(createFileFail, (state, payload) => {
+  console.log('createFileFail')
+  return {...state, ...{errors: payload}}
+})
+
 reducer.on(setError, (state, payload) => {
-  return {...state, ...{...state.errors, ...payload}}
+  console.log('setError')
+  return {...state, ...{errors: payload}}
 })
 
 export default reducer

@@ -14,3 +14,10 @@ export const fileCountSelector = createSelector(
     return state.count
   }
 )
+
+export const errorsSelector = createSelector(
+  getState,
+  state => {
+    return state.errors
+  }
+)
