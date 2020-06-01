@@ -7,12 +7,18 @@ import { TJobState } from '@/store/job/reducers'
 import { TTaskState } from '@/store/task/reducers'
 import { TFileState } from '@/store/file/reducers'
 import { TUserState } from '@/store/user/reducers'
+import { loadState, saveState } from '@/store/localStorage'
+import throttle from 'lodash/throttle'
+
 
 export default function makeStore() {
   const sagaMiddleware = createSagaMiddleware()
 
+  const persistedState = loadState()
+
   const store = createStore(
     rootReducer,
+    persistedState,
     composeWithDevTools(applyMiddleware(sagaMiddleware))
   )
 
@@ -20,6 +26,12 @@ export default function makeStore() {
     ...store,
     sagaTask: sagaMiddleware.run(rootSaga),
   }
+
+  storeWithSaga.subscribe(
+    throttle(() => {
+      saveState({user: {...store.getState().user, errors: []}})
+    }, 1000)
+  )
 
   return storeWithSaga
 }

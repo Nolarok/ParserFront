@@ -7,7 +7,7 @@ import { makeStyles, Theme } from '@material-ui/core/styles'
 type Props = {
   isOpen: boolean,
   handleClose: (event?: React.SyntheticEvent, reason?: string) => void,
-  data: {message: string}[]
+  data: { message: string }[]
   type: Color
 }
 
@@ -30,22 +30,33 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }))
 
-export const CustomSnackbar: React.FC<Props> = ({isOpen, handleClose, data, type}) => {
+export const CustomSnackbar: React.FC<Props> = ({ isOpen, handleClose, data, type }) => {
   const classes = useStyles()
 
   return (
     <div className={classes.root}>
       <Snackbar open={isOpen} autoHideDuration={null} onClose={handleClose}>
-        <Alert onClose={handleClose} severity={type} >
+        <Alert onClose={handleClose} severity={type}>
           <ul>
-            {data.map((row) => {
-              console.log(row.message)
-              const [position, message] = row.message.split(':')
-              return <li>
-                <span>{position}:</span>
-                <span>{message}</span>
-              </li>
-            })}
+            {
+              data.reduce((acc: React.ReactElement[], row, index) => {
+                if (acc.length > 4) {
+                  return acc
+                }
+
+                const [position, message] = row.message.split(':')
+                const error = (
+                  <li key={index}>
+                    <span>{position}:</span>
+                    <span>{message}</span>
+                  </li>
+                )
+
+                acc.push(error)
+
+                return acc
+              }, [])
+            }
           </ul>
         </Alert>
       </Snackbar>

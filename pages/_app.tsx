@@ -27,7 +27,6 @@ class NewApp extends App<Props> {
 
   render(): React.ReactElement {
     const { Component, pageProps, store } = this.props
-
     return (
       <Provider store={store}>
         <StylesProvider >

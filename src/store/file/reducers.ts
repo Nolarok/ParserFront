@@ -40,12 +40,10 @@ reducer.on(setRequestStatus, (state, payload: TRequestStatus) => {
 })
 
 reducer.on(createFileFail, (state, payload) => {
-  console.log('createFileFail')
   return {...state, ...{errors: payload}}
 })
 
 reducer.on(setError, (state, payload) => {
-  console.log('setError')
   return {...state, ...{errors: payload}}
 })
 

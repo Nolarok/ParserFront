@@ -1,7 +1,7 @@
 import { createReducer } from 'redux-act'
 
 import {
-  setError,
+  setErrors,
   setAuth,
 } from './actions'
 import { TUser } from '@/store/user/types'
@@ -9,7 +9,7 @@ import { TUser } from '@/store/user/types'
 export type TUserState = {
   isAuth: Boolean,
   user: TUser,
-  errors: {[key: string]: string}[]
+  errors: {message: string}[]
 }
 
 export const initialState: TUserState = {
@@ -30,7 +30,7 @@ reducer.on(setAuth, (state, payload) => {
   }
 })
 
-reducer.on(setError, (state, payload) => {
+reducer.on(setErrors, (state, payload) => {
   return {...state, ...{errors: payload}}
 })
 
