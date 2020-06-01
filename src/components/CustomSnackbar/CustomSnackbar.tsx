@@ -8,7 +8,8 @@ type Props = {
   isOpen: boolean,
   handleClose: (event?: React.SyntheticEvent, reason?: string) => void,
   data: { message: string }[]
-  type: Color
+  type: Color,
+  autoHideDuration?: null | number
 }
 
 function Alert(props: AlertProps) {
@@ -30,12 +31,12 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }))
 
-export const CustomSnackbar: React.FC<Props> = ({ isOpen, handleClose, data, type }) => {
+export const CustomSnackbar: React.FC<Props> = ({ isOpen, handleClose, data, type, autoHideDuration = null }) => {
   const classes = useStyles()
 
   return (
     <div className={classes.root}>
-      <Snackbar open={isOpen} autoHideDuration={null} onClose={handleClose}>
+      <Snackbar open={isOpen} autoHideDuration={autoHideDuration} onClose={handleClose}>
         <Alert onClose={handleClose} severity={type}>
           <ul>
             {

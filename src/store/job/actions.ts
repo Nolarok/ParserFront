@@ -31,3 +31,4 @@ export const [
 export const setRequestStatus = createAction<TRequestStatus>('@@JOB/REQUEST_STATUS')
 export const setError = createAction<{[key: string]: string}[]>('@@JOB/SET_ERROR')
 export const setElementsNumber = createAction<number>('@@JOB/SET_COUNT')
+export const setCreateJobStatus = createAction<TRequestStatus>('@@JOB/CREATE_JOB_STATUS')

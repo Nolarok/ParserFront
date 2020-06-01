@@ -3,19 +3,20 @@ import { cloneDeep } from 'lodash'
 
 import {
   fetchJobsSuccess,
+  createJobSuccess,
+  createJobFail,
+  setElementsNumber,
+  setError,
+  setRequestStatus,
   startJobSuccess,
   unloadReportSuccess,
-  setElementsNumber,
-  setRequestStatus,
-  setError,
+  setCreateJobStatus
 } from './actions'
 
-import {
-  fetchTasksSuccess
-} from '@/store/task/actions'
+import { fetchTasksSuccess } from '@/store/task/actions'
 
 
-import { TRequestStatus, RequestStatus } from '@/types'
+import { RequestStatus, TRequestStatus } from '@/types'
 import { EJobStatus, TJobRowData } from './types'
 import { TTaskData } from '@/store/task/types'
 
@@ -24,13 +25,15 @@ export type TJobState = {
   count: number
   requestStatus: TRequestStatus
   errors: { [key: string]: string }[]
+  createJobStatus: TRequestStatus
 }
 
 export const initialState: TJobState = {
   jobData: [],
   count: 0,
   requestStatus: RequestStatus.DEFAULT,
-  errors: []
+  errors: [],
+  createJobStatus: RequestStatus.DEFAULT
 }
 
 const reducer = createReducer<TJobState>({}, initialState)
@@ -59,6 +62,18 @@ reducer.on(startJobSuccess, (state, payload) => {
   job.status = payload.status === 200 ? EJobStatus.PROCESS : EJobStatus.QUEUE
 
   return _state
+})
+
+reducer.on(createJobSuccess, (state) => {
+  return { ...state, ...{ createJobStatus: RequestStatus.SUCCESS} }
+})
+
+reducer.on(createJobFail, (state) => {
+  return { ...state, ...{ createJobStatus: RequestStatus.FAILED } }
+})
+
+reducer.on(setCreateJobStatus, (state, payload) => {
+  return { ...state, ...{ createJobStatus: payload } }
 })
 
 reducer.on(setRequestStatus, (state, payload) => {

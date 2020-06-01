@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { format } from 'date-fns'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -10,20 +10,19 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import TableFooter from '@material-ui/core/TableFooter'
 import TablePagination from '@material-ui/core/TablePagination'
+import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
 
 import { TablePaginationActions } from '@/components/TablePaginationActions'
 
-import { filesSelector, fileCountSelector, errorsSelector } from '@/store/file/selectors'
-import { createJob } from '@/store/job/actions'
-import { fetchFiles, contentFile, setError } from '@/store/file/actions'
+import { errorsSelector, fileCountSelector, filesSelector } from '@/store/file/selectors'
+import { createStatusSelector } from '@/store/job/selectors'
+import { createJob, setCreateJobStatus } from '@/store/job/actions'
+import { contentFile, fetchFiles, setError } from '@/store/file/actions'
 import { TFileData } from '@/store/file/types'
-import IconButton from '@material-ui/core/IconButton'
-import VisibilityIcon from '@material-ui/icons/Visibility'
-import AddIcon from '@material-ui/icons/Add'
 import { useRouter } from 'next/router'
 import { Link } from '@material-ui/core'
-import { TPeriod } from '@/types'
+import { RequestStatus, TPeriod } from '@/types'
 import { CustomSnackbar } from '@/components/CustomSnackbar'
 
 type Props = {
@@ -44,11 +43,12 @@ export const FileTable: React.FC<Props> = ({ period }) => {
   const rows = useSelector(filesSelector)
   const filesCount = useSelector(fileCountSelector)
   const errors = useSelector(errorsSelector)
-  console.log({errors})
+  const createStatus = useSelector(createStatusSelector)
 
   const [currentPage, setCurrentPage] = useState<number>(0)
   const [rowsPerPage, setRowsPerPage] = useState<number>(10)
   const [snackbarIsOpen, setSnackbarIsOpen] = useState<boolean>(false)
+  const [snackbarCreateIsOpen, setSnackbarCreateIsOpen] = useState<boolean>(false)
 
   const handleCloseSnackbar = (event?: React.SyntheticEvent, reason?: string) => {
     if (reason === 'clickaway') {
@@ -59,9 +59,23 @@ export const FileTable: React.FC<Props> = ({ period }) => {
     dispatch(setError([]))
   }
 
+  // TODO TO_USE!!!!!!!
+  const handleCloseSnackbarCreate = (event?: React.SyntheticEvent, reason?: string) => {
+    if (reason === 'clickaway') {
+      return
+    }
+
+    setSnackbarCreateIsOpen(false)
+    dispatch(setCreateJobStatus(RequestStatus.DEFAULT))
+  }
+
   useEffect(() => {
     setSnackbarIsOpen(Boolean(errors.length))
   }, [errors])
+
+  useEffect(() => {
+    setSnackbarCreateIsOpen(createStatus === RequestStatus.SUCCESS)
+  }, [createStatus])
 
   useEffect(() => {
     dispatch(fetchFiles({
@@ -71,7 +85,19 @@ export const FileTable: React.FC<Props> = ({ period }) => {
 
   return (
     <React.Fragment>
-      <CustomSnackbar isOpen={snackbarIsOpen} handleClose={handleCloseSnackbar} data={errors} type={'error'}/>
+      <CustomSnackbar
+        isOpen={snackbarIsOpen}
+        handleClose={handleCloseSnackbar}
+        data={errors}
+        type={'error'}
+      />
+      <CustomSnackbar
+        isOpen={snackbarCreateIsOpen}
+        handleClose={handleCloseSnackbarCreate}
+        data={[{message: 'Добавить задачу: задача создана'}]}
+        type={'success'}
+        autoHideDuration={1000}
+      />
       <TableContainer component={Paper}>
         <Table component={'table'} aria-label="collapsible table">
           <TableHead component={'thead'}>
@@ -160,20 +186,18 @@ function Row(props: { row: TFileData }) {
         </TableCell>
         <TableCell align="left">{format(row.created, 'dd.MM.yyyy')}</TableCell>
         <TableCell align="center">
-          <IconButton color="primary" aria-label="upload picture" component="span" onClick={
-            () => {
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            disableElevation
+            onClick={() => {
               dispatch(createJob(row._id))
-            }
-          }>
-            <AddIcon/>
-          </IconButton>
-          <IconButton color="primary" aria-label="upload picture" component="span" onClick={
-            () => {
-              router.push(`/jobs?id=${row._id}`)
-            }
-          }>
-            <VisibilityIcon/>
-          </IconButton>
+              dispatch(setCreateJobStatus(RequestStatus.DEFAULT))
+            }}
+          >
+            Создать задачу
+          </Button>
         </TableCell>
       </TableRow>
     </React.Fragment>

@@ -13,6 +13,13 @@ export const jobsSelector = createSelector(
   }
 )
 
+export const createStatusSelector = createSelector(
+  getState,
+  state => {
+    return state.createJobStatus
+  }
+)
+
 export const jobsCountSelector = createSelector(
   getState,
   state => {
