@@ -17,7 +17,7 @@ export const FileLoader: React.FC = () => {
   }, [])
 
   const {inputFile, handleOpenInputFile, handleAddFile, error} = useFileUpload(onFileAdd)
-  const { readAsText } = useFileReader()
+  const { readAsDataURL } = useFileReader()
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -25,7 +25,7 @@ export const FileLoader: React.FC = () => {
       return
     }
 
-    readAsText(file).then((data: string | ArrayBuffer | null) => {
+    readAsDataURL(file).then((data: string | ArrayBuffer | null) => {
       if (typeof data === 'string') {
         setRowContent(data)
       }

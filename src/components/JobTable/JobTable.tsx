@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { format } from 'date-fns'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -24,10 +24,10 @@ import AttachFileIcon from '@material-ui/icons/AttachFile'
 
 import { TablePaginationActions } from '@/components/TablePaginationActions'
 
-import { TJobRowData, EJobStatus } from '@/store/job/types'
+import { EJobStatus, TJobRowData } from '@/store/job/types'
 import { TTaskRowData } from '@/store/task/types'
-import { jobsCountSelector, jobsSelector, jobTaskSelector, jobTaskCountSelector } from '@/store/job/selectors'
-import { fetchJobs, startJob, unloadCSV } from '@/store/job/actions'
+import { jobsCountSelector, jobsSelector, jobTaskCountSelector, jobTaskSelector } from '@/store/job/selectors'
+import { fetchJobs, startJob, unloadReport } from '@/store/job/actions'
 import { fetchTasks } from '@/store/task/actions'
 import { Dispatch } from 'redux'
 import { TPeriod } from '@/types'
@@ -36,7 +36,17 @@ type Props = {
   period: TPeriod
 }
 
-export const JobTable: React.FC<Props> = ({period}) => {
+const buildQuery = ({ from, to, limit = 10, offset = 0 }: { from: Date, to: Date, limit?: number, offset?: number}, ...params: any[]) => {
+  return {
+    from: +from || undefined,
+    to: +to || undefined,
+    limit,
+    offset,
+    ...params
+  }
+}
+
+export const JobTable: React.FC<Props> = ({ period }) => {
   const dispatch = useDispatch()
   const rows = useSelector(jobsSelector)
   const jobsCount = useSelector(jobsCountSelector)
@@ -45,7 +55,9 @@ export const JobTable: React.FC<Props> = ({period}) => {
   const [rowsPerPage, setRowsPerPage] = useState<number>(10)
 
   useEffect(() => {
-    dispatch(fetchJobs({params: {limit: rowsPerPage, offset: currentPage}}))
+    dispatch(fetchJobs({
+      params: buildQuery(period)
+    }))
   }, [period])
 
   return (
@@ -63,12 +75,13 @@ export const JobTable: React.FC<Props> = ({period}) => {
         </TableHead>
         <TableBody component={'tbody'}>
           {rows.map((row) => (
-            <Row key={row._id} row={row}/>
+            <Row key={row._id} row={row} period={period}/>
           ))}
         </TableBody>
         <TableFooter component={'tfoot'}>
           <TableRow component={'tr'}>
-            <TablePagination component={'td'}
+            <TablePagination
+              component={'td'}
               rowsPerPageOptions={[5, 10, 25, { label: 'Все', value: -1 }]}
               colSpan={6}
               count={jobsCount}
@@ -81,13 +94,25 @@ export const JobTable: React.FC<Props> = ({period}) => {
               }}
               onChangePage={(event, page) => {
                 setCurrentPage(page)
-                dispatch(fetchJobs({params: {limit: rowsPerPage, offset: page}}))
+                dispatch(fetchJobs({
+                  params: buildQuery({
+                    limit: rowsPerPage,
+                    offset: page,
+                    ...period,
+                  })
+                }))
               }}
               onChangeRowsPerPage={(element) => {
-                const rowsCount:number = +element.target.value === -1 ? 9999999 : +(element.target.value)
+                const rowsCount: number = +element.target.value === -1 ? 9999999 : +(element.target.value)
                 setRowsPerPage(+element.target.value)
                 setCurrentPage(0)
-                dispatch(fetchJobs({params: {limit: rowsCount, offset: currentPage}}))
+                dispatch(fetchJobs({
+                  params: buildQuery({
+                    ...period,
+                    limit: rowsPerPage,
+                    offset: currentPage
+                  })
+                }))
               }}
               ActionsComponent={TablePaginationActions}
             />
@@ -98,8 +123,8 @@ export const JobTable: React.FC<Props> = ({period}) => {
   )
 }
 
-function Row(props: { row: TJobRowData }) {
-  const { row } = props
+function Row(props: { row: TJobRowData, period: TPeriod }) {
+  const { row, period } = props
   const [open, setOpen] = React.useState(false)
   const [currentPage, setCurrentPage] = useState<number>(0)
   const [rowsPerPage, setRowsPerPage] = useState<number>(5)
@@ -120,16 +145,17 @@ function Row(props: { row: TJobRowData }) {
 
   return (
     <React.Fragment>
-      <TableRow component={'tr'} >
+      <TableRow component={'tr'}>
         <TableCell>
           <IconButton href={'#'} aria-label="expand row" size="small" onClick={() => {
             if (row.tasks.length === 0) {
               dispatch(fetchTasks({
-                params: { limit: 10, offset: 0, byJobId: true },
+                params: { limit: 10, offset: 0 , byJobId: true },
                 jobId: row._id
               }))
             }
-            setOpen(!open)}
+            setOpen(!open)
+          }
           }>
             {renderRowCollapseArrow(row.status as EJobStatus, open)}
           </IconButton>
@@ -137,7 +163,11 @@ function Row(props: { row: TJobRowData }) {
         <TableCell align="left">{row._id}</TableCell>
         <TableCell align="left">{row.fileName}</TableCell>
         <TableCell align="left">{format(row.created, 'dd.MM.yyyy')}</TableCell>
-        <TableCell align="left">{JobStatusDictionary[row.status]}</TableCell>
+        <TableCell align="left">
+          {JobStatusDictionary[row.status]}
+          {'  '}
+          {renderTasksInfo(row)}
+        </TableCell>
         <TableCell align="center">{renderActionButton(row, dispatch)}</TableCell>
       </TableRow>
       <TableRow component={'tr'}>
@@ -173,25 +203,26 @@ function Row(props: { row: TJobRowData }) {
                 </TableBody>
                 <TableFooter component={'tfoot'}>
                   <TableRow component={'tr'}>
-                    <TablePagination component={'td'}
-                       rowsPerPageOptions={[5, 10, 25, { label: 'Все', value: -1 }]}
-                       colSpan={6}
-                       count={taskCount(row._id)}
-                       rowsPerPage={rowsPerPage}
-                       page={currentPage}
-                       labelRowsPerPage={'Записей на странице'}
-                       SelectProps={{
-                         inputProps: { 'aria-label': 'rows per page' },
-                         native: true,
-                       }}
-                       onChangePage={(event, page) => {
-                         setCurrentPage(page)
-                       }}
-                       onChangeRowsPerPage={(element) => {
-                         setRowsPerPage(+element.target.value)
-                         setCurrentPage(0)
-                       }}
-                       ActionsComponent={TablePaginationActions}
+                    <TablePagination
+                      component={'td'}
+                      rowsPerPageOptions={[5, 10, 25, { label: 'Все', value: -1 }]}
+                      colSpan={6}
+                      count={taskCount(row._id)}
+                      rowsPerPage={rowsPerPage}
+                      page={currentPage}
+                      labelRowsPerPage={'Записей на странице'}
+                      SelectProps={{
+                        inputProps: { 'aria-label': 'rows per page' },
+                        native: true,
+                      }}
+                      onChangePage={(event, page) => {
+                        setCurrentPage(page)
+                      }}
+                      onChangeRowsPerPage={(element) => {
+                        setRowsPerPage(+element.target.value)
+                        setCurrentPage(0)
+                      }}
+                      ActionsComponent={TablePaginationActions}
                     />
                   </TableRow>
                 </TableFooter>
@@ -217,12 +248,16 @@ function renderActionButton(job: TJobRowData, dispatch: Dispatch) {
       return (
         <>
           <IconButton color="primary" aria-label="upload picture" component="span" onClick={
-            () => {dispatch(startJob(job._id))}
+            () => {
+              dispatch(startJob(job._id))
+            }
           }>
             <RefreshIcon/>
           </IconButton>
           <IconButton color="primary" aria-label="upload picture" component="span" onClick={
-            () => {dispatch(unloadCSV(job._id))}
+            () => {
+              dispatch(unloadReport(job._id))
+            }
           }>
             <AttachFileIcon/>
           </IconButton>
@@ -231,7 +266,9 @@ function renderActionButton(job: TJobRowData, dispatch: Dispatch) {
     case EJobStatus.CREATED:
       return (
         <IconButton color="primary" aria-label="upload picture" component="span" onClick={
-          () => {dispatch(startJob(job._id))}
+          () => {
+            dispatch(startJob(job._id))
+          }
         }>
           <PlayArrowIcon/>
         </IconButton>
@@ -239,9 +276,11 @@ function renderActionButton(job: TJobRowData, dispatch: Dispatch) {
     case EJobStatus.COMPLETED:
       return (
         <IconButton color="primary" aria-label="upload picture" component="span" onClick={
-          () => {dispatch(unloadCSV(job._id))}
+          () => {
+            dispatch(unloadReport(job._id))
+          }
         }>
-          <AttachFileIcon />
+          <AttachFileIcon/>
         </IconButton>
       )
     default:
@@ -249,7 +288,20 @@ function renderActionButton(job: TJobRowData, dispatch: Dispatch) {
   }
 }
 
-const JobStatusDictionary: {[key: string]: string} = {
+const renderTasksInfo = (row: TJobRowData): React.ReactElement => {
+  switch (row.status) {
+    case EJobStatus.QUEUE:
+    case EJobStatus.PROCESS:
+    case EJobStatus.CREATED:
+      return <span>{`(${row.tasksState.summary - row.tasksState.notProcessed}/${row.tasksState.summary})`}</span>
+    case EJobStatus.COMPLETED:
+      return <span>{`(${row.tasksState.summary})`}</span>
+    case EJobStatus.COMPLETED_WITH_ERRORS:
+      return <span>{`(${row.tasksState.failed}/${row.tasksState.summary})`}</span>
+  }
+}
+
+const JobStatusDictionary: { [key: string]: string } = {
   [EJobStatus.CREATED]: 'Создана',
   [EJobStatus.QUEUE]: 'В очереди',
   [EJobStatus.PROCESS]: 'В работе',

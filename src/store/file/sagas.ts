@@ -19,6 +19,7 @@ import { RequestStatus } from '@/types'
 import { AxiosResponse } from 'axios'
 import { TGetFileResponse } from '@/api/types'
 import { loadAsCSV } from '@/helpers/csv'
+import { BASE_URL } from '@/constants'
 
 // TODO ActionMatchingPatternType
 function* SFetchFiles({payload}: any): SagaIterator {
@@ -49,20 +50,13 @@ function* SFetchFiles({payload}: any): SagaIterator {
 
 function* SContentFile({payload}: any): SagaIterator {
   try {
-    yield put(setRequestStatus(RequestStatus.PENDING))
-    const response: AxiosResponse<string[][]> = yield call(FileApi.getContent, payload)
-    const headers = [
-      'Фамилия',
-      'Имя',
-      'Отчество',
-      'Дата'
-    ]
-
-    loadAsCSV(response.data, headers)
-    yield put(setRequestStatus(RequestStatus.SUCCESS))
+    const link = document.createElement('a')
+    link.setAttribute('href', BASE_URL + 'file/content/' + payload)
+    link.setAttribute('target', '_blank')
+    document.body.appendChild(link) // Required for FF
+    link.click()
   } catch (error) {
-    yield put(setRequestStatus(RequestStatus.FAILED))
-    yield put(contentFileFail(error))
+    console.error(error)
   }
 }
 

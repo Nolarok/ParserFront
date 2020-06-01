@@ -29,7 +29,16 @@ type Props = {
   period: TPeriod
 }
 
-export const FileTable: React.FC<Props> = ({period}) => {
+const buildQuery = ({ from, to, limit = 10, offset = 0 }: { from: Date, to: Date, limit?: number, offset?: number }) => {
+  return {
+    from: +from,
+    to: +to,
+    limit,
+    offset
+  }
+}
+
+export const FileTable: React.FC<Props> = ({ period }) => {
   const dispatch = useDispatch()
   const rows = useSelector(filesSelector)
   const filesCount = useSelector(fileCountSelector)
@@ -38,7 +47,9 @@ export const FileTable: React.FC<Props> = ({period}) => {
   const [rowsPerPage, setRowsPerPage] = useState<number>(10)
 
   useEffect(() => {
-    dispatch(fetchFiles({params: {limit: 10, offset: 0}}))
+    dispatch(fetchFiles({
+      params: buildQuery(period)
+    }))
   }, [period])
 
   return (
@@ -59,7 +70,8 @@ export const FileTable: React.FC<Props> = ({period}) => {
         </TableBody>
         <TableFooter component={'tfoot'}>
           <TableRow component={'tr'}>
-            <TablePagination component={'td'}
+            <TablePagination
+              component={'td'}
               rowsPerPageOptions={[5, 10, 25, { label: 'Все', value: -1 }]}
               colSpan={6}
               count={filesCount}
@@ -72,13 +84,31 @@ export const FileTable: React.FC<Props> = ({period}) => {
               }}
               onChangePage={(event, page) => {
                 setCurrentPage(page)
-                dispatch(fetchFiles({params: {limit: rowsPerPage, offset: page}}))
+                dispatch(
+                  fetchFiles({
+                      params: buildQuery({
+                        limit: page,
+                        offset: currentPage,
+                        ...period
+                      })
+                    }
+                  )
+                )
               }}
               onChangeRowsPerPage={(element) => {
-                const rowsCount:number = +element.target.value === -1 ? 9999999 : +(element.target.value)
+                const rowsCount: number = +element.target.value === -1 ? 9999999 : +(element.target.value)
                 setRowsPerPage(+element.target.value)
                 setCurrentPage(0)
-                dispatch(fetchFiles({params: {limit: rowsCount, offset: currentPage}}))
+                dispatch(
+                  fetchFiles({
+                      params: buildQuery({
+                        limit: rowsCount,
+                        offset: currentPage,
+                        ...period
+                      })
+                    }
+                  )
+                )
               }}
               ActionsComponent={TablePaginationActions}
             />
@@ -96,7 +126,7 @@ function Row(props: { row: TFileData }) {
 
   return (
     <React.Fragment>
-      <TableRow component={'tr'} >
+      <TableRow component={'tr'}>
         <TableCell align="left">{row._id}</TableCell>
         <TableCell align="left">
           <Link href="#" onClick={
@@ -105,24 +135,24 @@ function Row(props: { row: TFileData }) {
               dispatch(contentFile(row._id))
             }
           }>
-          {row.filename}
+            {row.filename}
           </Link>
         </TableCell>
         <TableCell align="left">{format(row.created, 'dd.MM.yyyy')}</TableCell>
         <TableCell align="center">
-          <IconButton  color="primary" aria-label="upload picture" component="span" onClick={
+          <IconButton color="primary" aria-label="upload picture" component="span" onClick={
             () => {
               dispatch(createJob(row._id))
             }
           }>
-            <AddIcon />
+            <AddIcon/>
           </IconButton>
-          <IconButton  color="primary" aria-label="upload picture" component="span" onClick={
+          <IconButton color="primary" aria-label="upload picture" component="span" onClick={
             () => {
               router.push(`/jobs?id=${row._id}`)
             }
           }>
-            <VisibilityIcon />
+            <VisibilityIcon/>
           </IconButton>
         </TableCell>
       </TableRow>

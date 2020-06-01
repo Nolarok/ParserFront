@@ -23,9 +23,9 @@ export const [
 ] = createAsyncAction<string>('@@JOB/CREATE')
 
 export const [
-  unloadCSV,
-  unloadCSVSuccess,
-  unloadCSVFail,
+  unloadReport,
+  unloadReportSuccess,
+  unloadReportFail,
 ] = createAsyncAction<string, string>('@@JOB/UNLOAD_CSV')
 
 export const setRequestStatus = createAction<TRequestStatus>('@@JOB/REQUEST_STATUS')

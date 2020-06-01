@@ -5,6 +5,8 @@ import { TFileData } from '@/store/file/types'
 export type DocumentRequest = {
   limit: number,
   offset: number,
+  from?: number,
+  to?: number
 }
 
 export type TGetJobRequest = {

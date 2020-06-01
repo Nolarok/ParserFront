@@ -4,7 +4,7 @@ import { cloneDeep } from 'lodash'
 import {
   fetchJobsSuccess,
   startJobSuccess,
-  unloadCSVSuccess,
+  unloadReportSuccess,
   setElementsNumber,
   setRequestStatus,
   setError,
@@ -73,7 +73,7 @@ reducer.on(setElementsNumber, (state, payload) => {
   return { ...state, ...{ count: payload } }
 })
 
-reducer.on(unloadCSVSuccess, (state, payload) => {
+reducer.on(unloadReportSuccess, (state, payload) => {
   return state
 })
 

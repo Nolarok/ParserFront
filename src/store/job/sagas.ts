@@ -3,6 +3,10 @@ import { all, call, put, takeEvery } from 'redux-saga/effects'
 
 import { JobApi } from '@/api/job'
 import { TJobData, TJobRowData } from './types'
+
+import { BASE_URL } from '@/constants'
+
+
 import {
   createJob,
   createJobSuccess,
@@ -11,7 +15,7 @@ import {
   fetchJobsSuccess,
   startJob,
   startJobSuccess,
-  unloadCSV,
+  unloadReport,
   setElementsNumber,
   setRequestStatus,
   setError
@@ -30,7 +34,6 @@ import { AxiosResponse } from 'axios'
 import { TaskApi } from '@/api/task'
 import { TTaskData } from '@/store/task/types'
 import { TGetJobResponse } from '@/api/types'
-import { loadAsCSV } from '@/helpers/csv'
 
 // TODO ActionMatchingPatternType
 function* SFetchJobs({ payload }: any): SagaIterator {
@@ -51,9 +54,6 @@ function* SFetchJobs({ payload }: any): SagaIterator {
     yield put(fetchJobsSuccess(jobData))
     yield put(setElementsNumber(jobResponse.data.count))
     yield put(setRequestStatus(RequestStatus.SUCCESS))
-
-    console.log('SFetchJobs response', jobResponse)
-
   } catch (error) {
     console.error(error)
     yield put(setRequestStatus(RequestStatus.FAILED))
@@ -104,22 +104,15 @@ function* SStartJob({ payload }: any): SagaIterator {
   }
 }
 
-function* SUnloadCSV({ payload }: any): SagaIterator {
+function* SUnloadReport({ payload }: any): SagaIterator {
   try {
-    const response: AxiosResponse<string[][]> = yield call(JobApi.unloadCSVJob, payload)
-    const headers = [
-      'Должник',
-      'Исполнительное производство',
-      'Реквизиты исполнительного документа',
-      'Дата, причина окончания или прекращения ИП',
-      'Предмет исполнения, сумма непогашенной задолженности',
-      'Судебный пристав-исполнитель',
-    ]
-    loadAsCSV(response.data, headers)
-
+    const link = document.createElement('a')
+    link.setAttribute('href', BASE_URL + 'job/unload/' + payload)
+    link.setAttribute('target', '_blank')
+    document.body.appendChild(link) // Required for FF
+    link.click()
   } catch (error) {
     console.error(error)
-    // yield put(setRequestStatus(RequestStatus.FAILED))
   }
 }
 
@@ -142,7 +135,7 @@ function* pollingSaga() {
     takeEvery(fetchJobs, SFetchJobs),
     takeEvery(fetchTasks, SFetchTasks),
     takeEvery(startJob, SStartJob),
-    takeEvery(unloadCSV, SUnloadCSV),
+    takeEvery(unloadReport, SUnloadReport),
     takeEvery(createJob, SCreateJob),
   ])
 }
