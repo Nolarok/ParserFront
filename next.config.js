@@ -41,3 +41,9 @@ module.exports = withTM(withSass(withImages({
     return config
   },
 })))
+
+module.exports = {...module.exports, ...{
+  env: {
+    API_URL: process.env.API_URL,
+  }
+}}
