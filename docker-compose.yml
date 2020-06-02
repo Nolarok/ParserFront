@@ -1,0 +1,8 @@
+version: "2"
+
+services:
+  front:
+    build: .
+    ports:
+      - "95.217.119.210:8888:3000"
+    command: "npm run start"
