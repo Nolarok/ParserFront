@@ -3,7 +3,6 @@ import { createAsyncAction } from '@/helpers/actions'
 import { TFileData } from './types'
 import { TRequestStatus } from '@/types'
 import { TCreateFileRequest, TGetFileRequest, TGetFileResponse } from '@/api/types'
-import { AxiosError } from 'axios'
 
 export const [
   fetchFiles,

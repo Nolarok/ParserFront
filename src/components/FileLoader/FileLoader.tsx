@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useFileUpload, useFileReader } from '@/helpers/hooks'
-import { createFile } from '@/store/file/actions'
+import { createFile, setError } from '@/store/file/actions'
 import Fab from '@material-ui/core/Fab'
 import AddIcon from '@material-ui/icons/Add'
 
@@ -39,8 +39,10 @@ export const FileLoader: React.FC = () => {
     }))
   }, [rowContent])
 
-  useCallback(() => {
-    console.error(error)
+  useEffect(() => {
+    if(error && error.type) {
+      dispatch(setError([{message: 'Загрузка файла: Некорректный формат файла'}]))
+    }
   }, [error])
 
   return (

@@ -77,7 +77,7 @@ export const useFileUpload = (onAddFiles: (files: File[]) => void) => {
       if (files.length) {
         const isFilesValid = files.every(file => {
           const checkResult = checkFile(file)
-
+          console.log(checkResult)
           if (checkResult !== true) {
             console.error(checkResult)
             setError(checkResult)
