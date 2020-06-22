@@ -61,13 +61,14 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
     content: {
       flexGrow: 1,
-      minHeight: 'calc(100vh - 108px)',
+      minHeight: 'calc(100vh - 110px)',
       padding: theme.spacing(3),
     },
     footer: {
       display: 'flex',
       justifyContent: 'flex-end',
       alignItems: 'center',
+      height: 110,
       paddingRight: 20,
       backgroundColor: '#ffffff',
 

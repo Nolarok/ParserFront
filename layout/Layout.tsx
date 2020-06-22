@@ -165,13 +165,14 @@ export const Layout: React.FC = ({ children }) => {
       </main>
     </div>
     <footer className={classes.footer}>
-
-      <img src={Logo} alt="logo" height={60}/>
+      <a href="https://firelabs.ru/">
+        <img src={Logo} alt="logo" height={60}/>
+      </a>
       <ul>
         <li>ООО "Фаер Лабс"</li>
         <li>ИНН/КПП: 7702465507/770201001</li>
-        <li>Телефон: +7(495)235-45-16</li>
-        <li>Почта: sale@firelabs.ru</li>
+        <li>Телефон: <a href="tel:+7(495)235-45-16">+7(495)235-45-16</a></li>
+        <li>Почта: <a href="mailto:sale@firelabs.ru">sale@firelabs.ru</a></li>
       </ul>
     </footer>
     </>
