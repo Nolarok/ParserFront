@@ -61,7 +61,20 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
     content: {
       flexGrow: 1,
+      minHeight: 'calc(100vh - 108px)',
       padding: theme.spacing(3),
+    },
+    footer: {
+      display: 'flex',
+      justifyContent: 'flex-end',
+      alignItems: 'center',
+      paddingRight: 20,
+      backgroundColor: '#ffffff',
+
+      '& ul': {
+        fontSize: 12,
+        margin: 20,
+      }
     },
   }),
 );

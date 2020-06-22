@@ -26,6 +26,7 @@ import { Auth } from '@/components/Auth'
 import { setErrors, setAuth } from '@/store/user/actions'
 import { CustomSnackbar } from '@/components/CustomSnackbar'
 import { setError } from '@/store/file/actions'
+import Logo from '../static/images/logo/logo.png'
 
 
 export const Layout: React.FC = ({ children }) => {
@@ -65,6 +66,7 @@ export const Layout: React.FC = ({ children }) => {
   }, [errors])
 
   return (
+    <>
     <div className={classes.root}>
       <CssBaseline/>
       <AppBar
@@ -86,7 +88,7 @@ export const Layout: React.FC = ({ children }) => {
             <MenuIcon/>
           </IconButton>
           <Typography variant="h6" noWrap>
-            Панель управления
+            Банк данных ИП ФССП
           </Typography>
 
           <IconButton
@@ -162,6 +164,17 @@ export const Layout: React.FC = ({ children }) => {
         }
       </main>
     </div>
+    <footer className={classes.footer}>
+
+      <img src={Logo} alt="logo" height={60}/>
+      <ul>
+        <li>ООО "Фаер Лабс"</li>
+        <li>ИНН/КПП: 7702465507/770201001</li>
+        <li>Телефон: +7(495)235-45-16</li>
+        <li>Почта: sale@firelabs.ru</li>
+      </ul>
+    </footer>
+    </>
   )
 }
 
