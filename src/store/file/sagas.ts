@@ -32,14 +32,13 @@ function* SFetchFiles({payload}: any): SagaIterator {
       return {
         _id: file._id,
         filename: file.filename,
+        lastTaskId: file.lastTaskId,
         created: new Date(file.created),
       }
     })
 
     yield put(fetchFilesSuccess({data, count: fileResponse.data.count}))
     yield put(setRequestStatus(RequestStatus.SUCCESS))
-
-    console.log('SFetchFiles response', fileResponse)
 
   } catch (error) {
     console.error(error)

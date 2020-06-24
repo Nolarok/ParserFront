@@ -80,7 +80,6 @@ function* SFetchTasks({ payload }: any): SagaIterator {
     yield put(fetchTasksSuccess({ data: taskData, jobId: payload.jobId }))
     yield put(setTaskRequestStatus(RequestStatus.SUCCESS))
 
-    console.log('SFetchTasks response', taskResponse)
 
   } catch (error) {
     console.error(error)
@@ -126,7 +125,6 @@ function* SCreateJob({ payload }: any): SagaIterator {
     console.error(error)
     yield put(setRequestStatus(RequestStatus.FAILED))
     yield put(createJobFail(error))
-    // yield put(setRequestStatus(RequestStatus.FAILED))
   }
 }
 

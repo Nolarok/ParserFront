@@ -33,20 +33,22 @@ import { Dispatch } from 'redux'
 import { TPeriod } from '@/types'
 
 type Props = {
-  period: TPeriod
+  period: TPeriod,
+  search: string,
 }
 
-const buildQuery = ({ from, to, limit = 10, offset = 0 }: { from: Date, to: Date, limit?: number, offset?: number}, ...params: any[]) => {
+const buildQuery = ({ from, to, limit = 10, offset = 0, search }: { from: Date, to: Date, limit?: number, offset?: number, search?: string}, ...params: any[]) => {
   return {
     from: +from || undefined,
     to: +to || undefined,
     limit,
     offset,
+    search,
     ...params
   }
 }
 
-export const JobTable: React.FC<Props> = ({ period }) => {
+export const JobTable: React.FC<Props> = ({ period, search }) => {
   const dispatch = useDispatch()
   const rows = useSelector(jobsSelector)
   const jobsCount = useSelector(jobsCountSelector)
@@ -56,9 +58,9 @@ export const JobTable: React.FC<Props> = ({ period }) => {
 
   useEffect(() => {
     dispatch(fetchJobs({
-      params: buildQuery(period)
+      params: buildQuery({...period, search})
     }))
-  }, [period])
+  }, [period, search])
 
   return (
     <TableContainer component={Paper}>

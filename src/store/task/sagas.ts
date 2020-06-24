@@ -22,8 +22,6 @@ function* SFetchTasks({payload}: any): SagaIterator {
 
     yield put(setRequestStatus(RequestStatus.SUCCESS))
 
-    console.log('SFetchTasks response', taskResponse)
-
   } catch (error) {
     console.error(error)
     yield put(setRequestStatus(RequestStatus.FAILED))

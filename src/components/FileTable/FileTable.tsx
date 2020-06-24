@@ -20,10 +20,13 @@ import { createStatusSelector } from '@/store/job/selectors'
 import { createJob, setCreateJobStatus } from '@/store/job/actions'
 import { contentFile, fetchFiles, setError } from '@/store/file/actions'
 import { TFileData } from '@/store/file/types'
-import { useRouter } from 'next/router'
 import { Link } from '@material-ui/core'
 import { RequestStatus, TPeriod } from '@/types'
 import { CustomSnackbar } from '@/components/CustomSnackbar'
+import IconButton from '@material-ui/core/IconButton'
+import Tooltip from '@material-ui/core/Tooltip'
+import ForwardIcon from '@material-ui/icons/Forward'
+import { useRouter } from 'next/router'
 
 type Props = {
   period: TPeriod
@@ -34,7 +37,7 @@ const buildQuery = ({ from, to, limit = 10, offset = 0 }: { from: Date, to: Date
     from: +from,
     to: +to,
     limit,
-    offset
+    offset,
   }
 }
 
@@ -96,7 +99,7 @@ export const FileTable: React.FC<Props> = ({ period }) => {
         handleClose={handleCloseSnackbarCreate}
         data={[{message: 'Добавить задачу: задача создана'}]}
         type={'success'}
-        autoHideDuration={1000}
+        autoHideDuration={3000}
       />
       <TableContainer component={Paper}>
         <Table component={'table'} aria-label="collapsible table">
@@ -106,11 +109,12 @@ export const FileTable: React.FC<Props> = ({ period }) => {
               <TableCell align="left">Имя файла</TableCell>
               <TableCell align="left">Дата создания</TableCell>
               <TableCell align="center">Действие</TableCell>
+              <TableCell align="center"/>
             </TableRow>
           </TableHead>
           <TableBody component={'tbody'}>
             {rows.map((row) => (
-              <Row key={row._id} row={row}/>
+              <Row key={row._id} row={row} page={currentPage} period={period} />
             ))}
           </TableBody>
           <TableFooter component={'tfoot'}>
@@ -165,10 +169,31 @@ export const FileTable: React.FC<Props> = ({ period }) => {
   )
 }
 
-function Row(props: { row: TFileData }) {
-  const { row } = props
+function Row(props: { row: TFileData, page: number, period: TPeriod }) {
+  const { row, period, page } = props
   const dispatch = useDispatch()
   const router = useRouter()
+
+  const renderForwardButton = ():React.ReactElement | null => {
+    if (row.lastTaskId === null) {
+      return null
+    } else {
+      return (
+        <Tooltip title="Перейти к последней задаче">
+          <IconButton
+            aria-label="search"
+            href={''}
+            onClick={() => {
+              router.push('/jobs?search=' + row.lastTaskId)
+            }}
+          >
+            <ForwardIcon />
+          </IconButton>
+        </Tooltip>
+
+      )
+    }
+  }
 
   return (
     <React.Fragment>
@@ -194,10 +219,23 @@ function Row(props: { row: TFileData }) {
             onClick={() => {
               dispatch(createJob(row._id))
               dispatch(setCreateJobStatus(RequestStatus.DEFAULT))
+              dispatch(
+                fetchFiles({
+                    params: buildQuery({
+                      limit: 10,
+                      offset: page,
+                      ...period
+                    })
+                  }
+                )
+              )
             }}
           >
             Создать задачу
           </Button>
+        </TableCell>
+        <TableCell>
+          {renderForwardButton()}
         </TableCell>
       </TableRow>
     </React.Fragment>
