@@ -84,7 +84,7 @@ export const JobTable: React.FC<Props> = ({ period, search }) => {
           <TableRow component={'tr'}>
             <TablePagination
               component={'td'}
-              rowsPerPageOptions={[5, 10, 25, { label: 'Все', value: -1 }]}
+              rowsPerPageOptions={[5, 10, 25]}
               colSpan={6}
               count={jobsCount}
               rowsPerPage={rowsPerPage}
@@ -207,7 +207,7 @@ function Row(props: { row: TJobRowData, period: TPeriod }) {
                   <TableRow component={'tr'}>
                     <TablePagination
                       component={'td'}
-                      rowsPerPageOptions={[5, 10, 25, { label: 'Все', value: -1 }]}
+                      rowsPerPageOptions={[5, 10, 25]}
                       colSpan={6}
                       count={taskCount(row._id)}
                       rowsPerPage={rowsPerPage}

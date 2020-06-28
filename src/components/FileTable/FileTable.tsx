@@ -121,7 +121,7 @@ export const FileTable: React.FC<Props> = ({ period }) => {
             <TableRow component={'tr'}>
               <TablePagination
                 component={'td'}
-                rowsPerPageOptions={[5, 10, 25, { label: 'Все', value: -1 }]}
+                rowsPerPageOptions={[5, 10, 25]}
                 colSpan={6}
                 count={filesCount}
                 rowsPerPage={rowsPerPage}
