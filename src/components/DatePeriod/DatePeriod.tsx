@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
 type Props = {
   period: TPeriod,
   handleChange: (period: TPeriod) => void
-  isHidden: boolean
+  isHidden?: boolean
 }
 
 export const DatePeriod: React.FC<Props> = ({period, handleChange, isHidden = false}) => {
