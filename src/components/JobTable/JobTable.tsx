@@ -20,7 +20,7 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp'
 import PlayArrowIcon from '@material-ui/icons/PlayArrow'
 import RefreshIcon from '@material-ui/icons/Refresh'
 
-import AttachFileIcon from '@material-ui/icons/AttachFile'
+import SaveAltIcon from '@material-ui/icons/SaveAlt'
 
 import { TablePaginationActions } from '@/components/TablePaginationActions'
 
@@ -261,7 +261,7 @@ function renderActionButton(job: TJobRowData, dispatch: Dispatch) {
               dispatch(unloadReport(job._id))
             }
           }>
-            <AttachFileIcon/>
+            <SaveAltIcon/>
           </IconButton>
         </>
       )
@@ -282,7 +282,7 @@ function renderActionButton(job: TJobRowData, dispatch: Dispatch) {
             dispatch(unloadReport(job._id))
           }
         }>
-          <AttachFileIcon/>
+          <SaveAltIcon/>
         </IconButton>
       )
     default:
