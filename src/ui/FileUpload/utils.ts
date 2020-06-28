@@ -1,4 +1,4 @@
-import { ALLOWED_EXTENSION_TYPES, BYTE_IN_MEGABYTE } from '@/constants/file'
+import { ALLOWED_EXTENSION, BYTE_IN_MEGABYTE } from '@/constants/file'
 
 export type TFileError = {
   type: FileErrorsTypes
@@ -20,8 +20,7 @@ export const checkFile = (file: File): TFileError | true => {
     }
   }
 
-  if (!ALLOWED_EXTENSION_TYPES.includes(file.type)) {
-    console.log('type', file.type)
+  if (!ALLOWED_EXTENSION.includes(Array.from(file.name.matchAll(/\.(\w+)$/gm)).flat()[1])) {
     return {
       type: FileErrorsTypes.EXTENSION_ERROR,
       message: `Некорректный формат файла`,
