@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useFileUpload, useFileReader } from '@/helpers/hooks'
-import { withStyles, Theme, makeStyles } from '@material-ui/core/styles'
+import {withStyles, Theme, makeStyles, createStyles} from '@material-ui/core/styles'
 import { createFile, setError } from '@/store/file/actions'
 import Tooltip from '@material-ui/core/Tooltip'
 import Fab from '@material-ui/core/Fab'
@@ -8,21 +8,24 @@ import AddIcon from '@material-ui/icons/Add'
 
 import { useDispatch } from 'react-redux'
 
-const HtmlTooltip = withStyles((theme: Theme) => ({
-  tooltip: {
-    backgroundColor: '#f5f5f9',
-    color: 'rgba(0, 0, 0, 0.87)',
-    maxWidth: 220,
-    fontSize: theme.typography.pxToRem(12),
-    border: '1px solid #dadde9',
-
-    '& li:not(:first-child)': {
-      marginTop: 20,
-    }
-  },
-}))(Tooltip);
+export const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+      fileUploadWrapper: {
+        display: 'flex',
+        alignItems: 'center',
+      },
+      fileUploadHelp: {
+        borderRadius: 8,
+        background: '#ffffff',
+        padding: 10,
+        marginLeft: 20,
+        border: '1px solid rgba(0,0,0, .3)'
+      }
+    })
+)
 
 export const FileLoader: React.FC = () => {
+  const classes = useStyles()
   const [rowContent, setRowContent] = useState<string | null>(null)
   const [file, setFile] = useState<File | null>(null)
 
@@ -62,32 +65,26 @@ export const FileLoader: React.FC = () => {
   }, [error])
 
   const tooltipContent = (
-    <ul>
+    <ul className={classes.fileUploadHelp}>
       <li> <b>Поиск по Ф.И.О.:</b> Файл должен содержать столбцы "Имя", "Фамилия", "Дата". </li>
       <li> <b>Поиск по ИП:</b> Файл должен содержать стобик "Номер ИП". </li>
     </ul>
   )
 
   return (
-    <div>
+    <div className={classes.fileUploadWrapper}>
       <input
         onChange={handleAddFile}
         type="file"
         ref={inputFile}
         style={{ display: 'none' }}
       />
-
-      <HtmlTooltip
-        title={tooltipContent}
-        aria-label={'sdd'}
-        placement="right"
-      >
         <Fab color="primary" aria-label="add" onClick={
           () => { handleOpenInputFile() }
         }>
           <AddIcon/>
         </Fab>
-      </HtmlTooltip>
+      {tooltipContent}
     </div>
   )
 }
