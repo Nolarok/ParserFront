@@ -23,14 +23,15 @@ const useStyles = makeStyles((theme: Theme) =>
 type Props = {
   period: TPeriod,
   handleChange: (period: TPeriod) => void
+  isHidden: boolean
 }
 
-export const DatePeriod: React.FC<Props> = ({period, handleChange}) => {
+export const DatePeriod: React.FC<Props> = ({period, handleChange, isHidden = false}) => {
   const classes = useStyles()
 
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
-      <Grid container justify="flex-start">
+      <Grid container justify="flex-start" style={{visibility: isHidden ? 'hidden' : 'visible'}}>
         <KeyboardDatePicker
           className={classes.picker}
           disableToolbar

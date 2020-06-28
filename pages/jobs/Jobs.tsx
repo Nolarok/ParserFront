@@ -39,7 +39,7 @@ const Page: React.FC = () => {
         Задачи
       </Typography>
       <div className={classes.wrapper}>
-        <DatePeriod period={period} handleChange={changePeriod}/>
+        <DatePeriod period={period} handleChange={changePeriod} isHidden={value !== ''}/>
         <TextField
           className={classes.search}
           defaultValue={value}
