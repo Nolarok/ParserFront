@@ -64,7 +64,9 @@ export const Layout: React.FC = ({children}) => {
     dispatch(setError([]))
   }
 
+  console.log('asdasdDASASDASDDASDAS', {errors})
   useEffect(() => {
+
     setSnackbarIsOpen(Boolean(errors.length))
   }, [errors])
 
@@ -168,8 +170,8 @@ export const Layout: React.FC = ({children}) => {
             ? children
             : <Auth
               authenticate={(login, password) => {
-                dispatch(loginAction({login, password}))
                 dispatch(setErrors([]))
+                dispatch(loginAction({login, password}))
               }}
               setErrors={(errors) => {
                 dispatch(setErrors(errors))

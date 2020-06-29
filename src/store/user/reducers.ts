@@ -6,6 +6,7 @@ import {
   getUserListSuccess,
   loginSuccess,
   createUserSuccess,
+  loginFail,
   logout
 } from './actions'
 import { TUser } from '@/store/user/types'
@@ -41,6 +42,13 @@ reducer.on(logout, (state) => {
   return {
     ...state,
     ...{isAuth: false}
+  }
+})
+
+reducer.on(loginFail, (state) => {
+  return {
+    ...state,
+    ...{errors: [...state.errors, {message: 'Авторизация: Проверьте правильность данных'}]}
   }
 })
 

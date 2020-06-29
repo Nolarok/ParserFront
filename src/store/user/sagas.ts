@@ -47,6 +47,7 @@ function* SLogin({payload}: any): SagaIterator {
     console.error(error)
     console.log({error})
     yield put(setRequestStatus(RequestStatus.FAILED))
+    yield put(loginFail({}))
     // yield put(setErrors(RequestStatus.FAILED))
   }
 }
