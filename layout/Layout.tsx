@@ -23,11 +23,10 @@ import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted'
 import { useDispatch, useSelector } from 'react-redux'
 import { authStateSelector, errorsSelector } from '@/store/user/selectors'
 import { Auth } from '@/components/Auth'
-import { setErrors, setAuth } from '@/store/user/actions'
+import {setErrors, setAuth, logout, login as loginAction} from '@/store/user/actions'
 import { CustomSnackbar } from '@/components/CustomSnackbar'
 import { setError } from '@/store/file/actions'
 import Logo from '../static/images/logo/logo.png'
-
 
 export const Layout: React.FC = ({ children }) => {
   const classes = useStyles()
@@ -47,7 +46,7 @@ export const Layout: React.FC = ({ children }) => {
   }
 
   const handleLogout = () => {
-    dispatch(setAuth({isAuth: false, login: ''}))
+    dispatch(logout())
   }
 
   const [snackbarIsOpen, setSnackbarIsOpen] = useState(false)
@@ -153,8 +152,9 @@ export const Layout: React.FC = ({ children }) => {
         {isAuth
           ? children
           : <Auth
-            authenticate={(login) => {
-              dispatch(setAuth({ isAuth: true, login }))
+            authenticate={(login, password) => {
+              console.log('click')
+              dispatch(loginAction({login, password}))
               dispatch(setErrors([]))
             }}
             setErrors={(errors) => {

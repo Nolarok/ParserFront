@@ -6,9 +6,7 @@ const Home: React.FC = () => {
   router.replace('/files')
 
   return (
-    <div>
-
-    </div>
+    <div/>
   )
 }
 

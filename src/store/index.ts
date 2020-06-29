@@ -10,7 +10,6 @@ import { TUserState } from '@/store/user/reducers'
 import { loadState, saveState } from '@/store/localStorage'
 import throttle from 'lodash/throttle'
 
-
 export default function makeStore() {
   const sagaMiddleware = createSagaMiddleware()
 

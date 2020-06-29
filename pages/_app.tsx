@@ -7,6 +7,8 @@ import makeStore from '@/store'
 import '@/styles/main.scss'
 import { Layout } from '../layout'
 import { StylesProvider } from '@material-ui/core/styles'
+import {axiosInstance} from '@/api/axios'
+import {logout} from "@/store/user/actions";
 
 type Props = {
   store: any
@@ -25,8 +27,25 @@ class NewApp extends App<Props> {
     return { pageProps }
   }
 
+  componentDidMount() {
+    axiosInstance.interceptors.response.use(
+      response => {
+        return response
+      },
+      (error) => {
+        if(error.response.status === 401) {
+          this.props.store.dispatch(logout())
+        }
+        return Promise.reject(error)
+      }
+    )
+  }
+
   render(): React.ReactElement {
     const { Component, pageProps, store } = this.props
+
+
+
     return (
       <Provider store={store}>
         <StylesProvider >

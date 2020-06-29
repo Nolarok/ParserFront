@@ -1,5 +1,6 @@
 export type TUser = {
   login: string,
+  role: string,
 }
 
 // TODO server_auth

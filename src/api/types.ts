@@ -15,6 +15,11 @@ export type TGetJobRequest = {
   jobId?: string,
 }
 
+export type TCreateUserRequest = {
+  login: string,
+  password: string,
+}
+
 export type TGetTaskRequest = {
   params?: DocumentRequest & {byJobId?: boolean}
   jobId?: string,

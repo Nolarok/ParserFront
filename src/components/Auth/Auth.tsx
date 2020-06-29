@@ -7,10 +7,6 @@ import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 
-import { TUser, passMatch } from '@/store/user/types'
-
-import { useDispatch } from 'react-redux'
-
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -44,7 +40,7 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 type Props = {
-  authenticate: (login: string) => void
+  authenticate: (login: string, password: string) => void
   setErrors: (errors: {message: string}[]) => void
 }
 
@@ -64,16 +60,12 @@ export const Auth: React.FC<Props> = ({authenticate, setErrors}) => {
       errors.push({message: 'Пароль: поле обязательно для заполнения'})
     }
 
-    if (passMatch[login] !== password && !errors.length) {
-      errors.push({message: 'Авторизация: неверный логин или пароль'})
-    }
-
     if (errors.length) {
       setErrors(errors)
       return
     }
 
-    authenticate(login)
+    authenticate(login, password)
   }
 
   return (
