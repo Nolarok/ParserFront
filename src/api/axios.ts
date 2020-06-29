@@ -11,18 +11,19 @@ export const axiosInstance = axios.create({
     Pragma: 'no-cache',
   },
 })
-//
-// axiosInstance.interceptors.request.use(
-//   config => {
-//     const token = cookie.get('token')
-//
-//     if (token) {
-//       config.headers.Authorization = `Bearer ${token}`
-//     }
-//     return config
-//   },
-//   error => {
-//     return Promise.reject(error)
-//   }
-// )
-//
+
+axiosInstance.interceptors.request.use(
+  config => {
+    const token = cookie.get('token')
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
+    }
+    return config
+  },
+  error => {
+    console.log({error})
+    return Promise.reject(error)
+  }
+)
+

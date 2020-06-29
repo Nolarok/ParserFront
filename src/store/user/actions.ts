@@ -9,7 +9,7 @@ export const [
   createUser,
   createUserSuccess,
   createUserFail,
-] = createAsyncAction<TGetTaskRequest, {data: TTaskData[], jobId: string}>('@@USER/CREATE')
+] = createAsyncAction<{login: string, password: string}, {login: string, role: string, _id: string}>('@@USER/CREATE')
 
 export const [
   login,
@@ -21,13 +21,13 @@ export const [
   getUserList,
   getUserListSuccess,
   getUserListFail,
-] = createAsyncAction<TGetTaskRequest, {data: TTaskData[], jobId: string}>('@@USER/GET_LIST')
+] = createAsyncAction<{login: string, role: string, _id: string}[]>('@@USER/GET_LIST', true)
 
 export const [
   deleteUser,
   deleteUserSuccess,
   deleteUserFail,
-] = createAsyncAction<TGetTaskRequest, {data: TTaskData[], jobId: string}>('@@USER/DELETE')
+] = createAsyncAction<string, string>('@@USER/DELETE')
 
 export const setRequestStatus = createAction<TRequestStatus>('@@USER/REQUEST_STATUS')
 export const logout = createAction('@@USER/LOGOUT')

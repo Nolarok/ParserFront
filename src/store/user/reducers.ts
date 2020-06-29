@@ -2,8 +2,10 @@ import { createReducer } from 'redux-act'
 
 import {
   setErrors,
-  setAuth,
+  deleteUserSuccess,
+  getUserListSuccess,
   loginSuccess,
+  createUserSuccess,
   logout
 } from './actions'
 import { TUser } from '@/store/user/types'
@@ -11,7 +13,8 @@ import { TUser } from '@/store/user/types'
 export type TUserState = {
   isAuth: Boolean,
   user: TUser,
-  errors: {message: string}[]
+  usersList: {login: string, role: string, _id: string}[],
+  errors: {message: string}[],
 }
 
 export const initialState: TUserState = {
@@ -20,6 +23,7 @@ export const initialState: TUserState = {
     login: '',
     role: ''
   },
+  usersList: [],
   errors: [],
 }
 
@@ -34,10 +38,32 @@ reducer.on(loginSuccess, (state, payload) => {
 })
 
 reducer.on(logout, (state) => {
-  console.log('logout2')
   return {
     ...state,
     ...{isAuth: false}
+  }
+})
+
+reducer.on(getUserListSuccess, (state, payload) => {
+  return {
+    ...state,
+    ...{usersList: payload}
+  }
+})
+
+reducer.on(deleteUserSuccess, (state, id) => {
+  const users = state.usersList.filter(user => user._id !== id)
+
+  return {
+    ...state,
+    ...{usersList: users}
+  }
+})
+
+reducer.on(createUserSuccess, (state, user) => {
+    return {
+    ...state,
+    ...{usersList: [user, ...state.usersList]}
   }
 })
 

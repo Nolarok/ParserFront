@@ -11,8 +11,14 @@ import {
   loginFail,
   loginSuccess,
   setRequestStatus,
+  getUserList,
+  getUserListSuccess,
+  createUser,
+  createUserSuccess,
+  deleteUser,
+  deleteUserSuccess,
   logout,
-  setAuth,
+  setAuth, setErrors,
 } from './actions'
 import { RequestStatus } from '@/types'
 import { AxiosResponse } from 'axios'
@@ -27,17 +33,30 @@ function* SLogin({payload}: any): SagaIterator {
       password: payload.password,
     })
 
-    cookie.set('token', response.data, {
+    cookie.set('token', response.data.token, {
       maxAge: 7200, // 2 часа,
       path: '/',
     })
 
     const parsedPayload = parseJwt(response.data.token)
-    console.log({parsedPayload})
-
-    Router.replace('/jobs')
+    Router.push('/jobs')
 
     yield put(loginSuccess({login: parsedPayload.login, role: parsedPayload.role}))
+    yield put(setRequestStatus(RequestStatus.SUCCESS))
+  } catch (error) {
+    console.error(error)
+    console.log({error})
+    yield put(setRequestStatus(RequestStatus.FAILED))
+    // yield put(setErrors(RequestStatus.FAILED))
+  }
+}
+
+function* SGetList({payload}: any): SagaIterator {
+  try {
+    yield put(setRequestStatus(RequestStatus.PENDING))
+    const response: AxiosResponse = yield call(UserApi.getList)
+
+    yield put(getUserListSuccess(response.data))
     yield put(setRequestStatus(RequestStatus.SUCCESS))
   } catch (error) {
     console.error(error)
@@ -45,9 +64,33 @@ function* SLogin({payload}: any): SagaIterator {
   }
 }
 
+function* SDelete({payload}: any): SagaIterator {
+  try {
+    yield put(setRequestStatus(RequestStatus.PENDING))
+    const response: AxiosResponse = yield call(UserApi.delete, payload)
+
+    yield put(deleteUserSuccess(payload))
+  } catch (error) {
+    console.error(error)
+    yield put(setRequestStatus(RequestStatus.FAILED))
+  }
+}
+
+function* SCreate({payload}: any): SagaIterator {
+  try {
+    yield put(setRequestStatus(RequestStatus.PENDING))
+    const response: AxiosResponse = yield call(UserApi.create, payload)
+
+    yield put(createUserSuccess(response.data))
+  } catch (error) {
+    console.error(error)
+    yield put(setRequestStatus(RequestStatus.FAILED))
+  }
+}
+
+
 function SLogout() {
-  console.log('SLogout')
-  Router.replace('/auth')
+  Router.push('/auth')
   cookie.remove('token', { path: '/' })
 }
 
@@ -55,6 +98,9 @@ function* pollingSaga() {
   yield all([
     takeEvery(login, SLogin),
     takeEvery(logout, SLogout),
+    takeEvery(getUserList, SGetList),
+    takeEvery(deleteUser, SDelete),
+    takeEvery(createUser, SCreate),
   ])
 }
 

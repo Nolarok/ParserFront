@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography'
 import { FileLoader } from '@/components/FileLoader'
 import { FileTable } from '@/components/FileTable'
 import { Box } from '@material-ui/core'
-import { useBindRouterQuery, useDatePeriod } from '@/hooks'
+import { useDatePeriod } from '@/hooks'
 
 const Page: React.FC = () => {
   const {period, changePeriod} = useDatePeriod()

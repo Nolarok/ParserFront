@@ -28,7 +28,7 @@ export default function makeStore() {
 
   storeWithSaga.subscribe(
     throttle(() => {
-      saveState({user: {...store.getState().user, errors: []}})
+      saveState({user: {...store.getState().user, errors: [], usersList: []}})
     }, 1000)
   )
 

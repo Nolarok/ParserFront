@@ -33,7 +33,7 @@ class NewApp extends App<Props> {
         return response
       },
       (error) => {
-        if(error.response.status === 401) {
+        if(error?.response?.status === 401) {
           this.props.store.dispatch(logout())
         }
         return Promise.reject(error)
