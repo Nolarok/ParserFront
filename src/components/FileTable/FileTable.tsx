@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { format } from 'date-fns'
-import { useDispatch, useSelector } from 'react-redux'
+import React, {useEffect, useState} from 'react'
+import {format} from 'date-fns'
+import {useDispatch, useSelector} from 'react-redux'
 
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -13,26 +13,26 @@ import TablePagination from '@material-ui/core/TablePagination'
 import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
 
-import { TablePaginationActions } from '@/components/TablePaginationActions'
+import {TablePaginationActions} from '@/components/TablePaginationActions'
 
-import { errorsSelector, fileCountSelector, filesSelector } from '@/store/file/selectors'
-import { createStatusSelector } from '@/store/job/selectors'
-import { createJob, setCreateJobStatus } from '@/store/job/actions'
-import { contentFile, fetchFiles, setError } from '@/store/file/actions'
-import { TFileData } from '@/store/file/types'
-import { Link } from '@material-ui/core'
-import { RequestStatus, TPeriod } from '@/types'
-import { CustomSnackbar } from '@/components/CustomSnackbar'
+import {errorsSelector, fileCountSelector, filesSelector} from '@/store/file/selectors'
+import {createStatusSelector} from '@/store/job/selectors'
+import {createJob, setCreateJobStatus} from '@/store/job/actions'
+import {contentFile, fetchFiles, setError} from '@/store/file/actions'
+import {TFileData} from '@/store/file/types'
+import {Link} from '@material-ui/core'
+import {RequestStatus, TPeriod} from '@/types'
+import {CustomSnackbar} from '@/components/CustomSnackbar'
 import IconButton from '@material-ui/core/IconButton'
 import Tooltip from '@material-ui/core/Tooltip'
 import ForwardIcon from '@material-ui/icons/Forward'
-import { useRouter } from 'next/router'
+import {useRouter} from 'next/router'
 
 type Props = {
   period: TPeriod
 }
 
-const buildQuery = ({ from, to, limit = 10, offset = 0 }: { from: Date, to: Date, limit?: number, offset?: number }) => {
+const buildQuery = ({from, to, limit = 10, offset = 0}: { from: Date, to: Date, limit?: number, offset?: number }) => {
   return {
     from: +from,
     to: +to,
@@ -41,7 +41,7 @@ const buildQuery = ({ from, to, limit = 10, offset = 0 }: { from: Date, to: Date
   }
 }
 
-export const FileTable: React.FC<Props> = ({ period }) => {
+export const FileTable: React.FC<Props> = ({period}) => {
   const dispatch = useDispatch()
   const rows = useSelector(filesSelector)
   const filesCount = useSelector(fileCountSelector)
@@ -114,7 +114,7 @@ export const FileTable: React.FC<Props> = ({ period }) => {
           </TableHead>
           <TableBody component={'tbody'}>
             {rows.map((row) => (
-              <Row key={row._id} row={row} page={currentPage} period={period} />
+              <Row key={row._id} row={row} page={currentPage} period={period}/>
             ))}
           </TableBody>
           <TableFooter component={'tfoot'}>
@@ -128,7 +128,7 @@ export const FileTable: React.FC<Props> = ({ period }) => {
                 page={currentPage}
                 labelRowsPerPage={'Записей на странице'}
                 SelectProps={{
-                  inputProps: { 'aria-label': 'rows per page' },
+                  inputProps: {'aria-label': 'rows per page'},
                   native: true,
                 }}
                 onChangePage={(event, page) => {
@@ -170,29 +170,25 @@ export const FileTable: React.FC<Props> = ({ period }) => {
 }
 
 function Row(props: { row: TFileData, page: number, period: TPeriod }) {
-  const { row, period, page } = props
+  const {row, period, page} = props
   const dispatch = useDispatch()
   const router = useRouter()
 
-  const renderForwardButton = ():React.ReactElement | null => {
-    if (row.lastTaskId === null) {
-      return null
-    } else {
-      return (
-        <Tooltip title="Перейти к последней задаче">
-          <IconButton
-            aria-label="search"
-            href={''}
-            onClick={() => {
-              router.push('/jobs?search=' + row.lastTaskId)
-            }}
-          >
-            <ForwardIcon />
-          </IconButton>
-        </Tooltip>
+  const renderForwardButton = (): React.ReactElement | null => {
+    return (
+      <Tooltip title="Перейти к последней задаче">
+        <IconButton
+          aria-label="search"
+          href={''}
+          onClick={() => {
+            router.push('/jobs?search=' + row.filename)
+          }}
+        >
+          <ForwardIcon/>
+        </IconButton>
+      </Tooltip>
 
-      )
-    }
+    )
   }
 
   return (
