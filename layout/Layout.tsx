@@ -64,7 +64,6 @@ export const Layout: React.FC = ({children}) => {
     dispatch(setError([]))
   }
 
-  console.log('asdasdDASASDASDDASDAS', {errors})
   useEffect(() => {
 
     setSnackbarIsOpen(Boolean(errors.length))
