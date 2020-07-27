@@ -12,6 +12,7 @@ import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
+import RouterIcon from '@material-ui/icons/Router'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
@@ -143,14 +144,24 @@ export const Layout: React.FC = ({children}) => {
               <ListItemText primary={'Задачи'}/>
             </ListItem>
             {user.role === 'admin' ? (
-              <ListItem button onClick={() => {
-                router.push('/users')
-              }}>
-                <ListItemIcon>
-                  <AccountCircleIcon/>
-                </ListItemIcon>
-                <ListItemText primary={'Пользователи'}/>
-              </ListItem>
+              <>
+                <ListItem button onClick={() => {
+                  router.push('/users')
+                }}>
+                  <ListItemIcon>
+                    <AccountCircleIcon/>
+                  </ListItemIcon>
+                  <ListItemText primary={'Пользователи'}/>
+                </ListItem>
+                <ListItem button onClick={() => {
+                  router.push('/proxy')
+                }}>
+                  <ListItemIcon>
+                    <RouterIcon/>
+                  </ListItemIcon>
+                  <ListItemText primary={'Прокси'}/>
+                </ListItem>
+              </>
             ) : null}
 
           </List>

@@ -7,7 +7,7 @@
     "@babel/plugin-proposal-optional-chaining",
     [
       "styled-components",
-      { "ssr": false, "displayName": false, "preprocess": false }
+      { "ssr": true, "displayName": true, "preprocess": false }
     ]
   ]
 }

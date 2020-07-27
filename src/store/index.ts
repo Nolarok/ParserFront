@@ -7,6 +7,7 @@ import { TJobState } from '@/store/job/reducers'
 import { TTaskState } from '@/store/task/reducers'
 import { TFileState } from '@/store/file/reducers'
 import { TUserState } from '@/store/user/reducers'
+import {TProxyState} from "@/store/proxy/reducers";
 import { loadState, saveState } from '@/store/localStorage'
 import throttle from 'lodash/throttle'
 
@@ -40,4 +41,5 @@ export type AppState = {
   task: TTaskState,
   file: TFileState,
   user: TUserState,
+  proxy: TProxyState,
 }

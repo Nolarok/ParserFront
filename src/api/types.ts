@@ -20,6 +20,13 @@ export type TCreateUserRequest = {
   password: string,
 }
 
+export type TCreateProxyRequest = {
+  login: string,
+  password: string,
+  host: string,
+  port: string,
+}
+
 export type TGetTaskRequest = {
   params?: DocumentRequest & {byJobId?: boolean}
   jobId?: string,
