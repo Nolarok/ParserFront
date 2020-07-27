@@ -9,7 +9,7 @@ import {
 import cloneDeep from 'lodash/cloneDeep'
 
 export type TProxyState = {
-  proxyList: {login: string, password: string, _id: string, host: string, port: string}[],
+  proxyList: {login: string, password: string, _id: string, host: string, port: string, blocked?: string}[],
   errors: {message: string}[],
 }
 

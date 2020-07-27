@@ -37,6 +37,7 @@ export const ProxyTable: React.FC<Props> = () => {
             <TableCell align="left">Порт</TableCell>
             <TableCell align="left">Логин</TableCell>
             <TableCell align="left">Пароль</TableCell>
+            <TableCell align="left">Время блока</TableCell>
             <TableCell/>
           </TableRow>
         </TableHead>
@@ -48,6 +49,7 @@ export const ProxyTable: React.FC<Props> = () => {
                 <TableCell align="left">{row.port}</TableCell>
                 <TableCell align="left">{row.login}</TableCell>
                 <TableCell align="left">{row.password}</TableCell>
+                <TableCell align="left">{row.blocked}</TableCell>
                 <TableCell align="left">
                   <IconButton color="primary" aria-label="upload picture" component="span" onClick={
                     () => {
